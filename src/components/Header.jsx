@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigation, RefreshCw, Moon, Sun, Clock } from "lucide-react";
+import { Navigation, RefreshCw, Moon, Sun } from "lucide-react";
 
 export default function Header({
   currentTime,
@@ -114,10 +114,20 @@ export default function Header({
         <button
           type="button"
           onClick={() => setDarkMode((prev) => !prev)}
-          title={darkMode ? "Switch to daylight mode" : "Switch to dark mode"}
-          className="glass-pill p-2 rounded-2xl text-slate-300 hover:text-cyan-300 cursor-pointer active:scale-95 transition"
+          title={darkMode ? "Switch to Daylight Mode" : "Switch to Dark Mode"}
+          className="glass-pill px-3 py-2 rounded-2xl flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all text-xs font-bold"
         >
-          {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-400" />}
+          {darkMode ? (
+            <>
+              <Sun className="w-4 h-4 text-amber-400" />
+              <span className="text-amber-300 hidden sm:inline">Light</span>
+            </>
+          ) : (
+            <>
+              <Moon className="w-4 h-4 text-indigo-500" />
+              <span className="text-indigo-900 hidden sm:inline">Dark</span>
+            </>
+          )}
         </button>
 
         {/* Desktop Clock */}
