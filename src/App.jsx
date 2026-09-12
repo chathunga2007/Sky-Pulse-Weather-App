@@ -296,7 +296,7 @@ export default function App() {
       <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-cyan-900/10 rounded-full blur-[180px] pointer-events-none orb-c" />
 
       {/* Main Content Container */}
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 z-10 space-y-6">
+      <div className="w-full max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-8 z-10 space-y-4 sm:space-y-6">
         {/* Unified Top Glass Header with Integrated Controls */}
         <Header
           currentTime={currentTime}
@@ -336,15 +336,15 @@ export default function App() {
 
         {/* Error Alert */}
         {error && (
-          <div className="glass-panel p-4 rounded-2xl bg-rose-500/15 border-rose-500/30 text-rose-200 text-sm flex items-center justify-between gap-3 animate-fade-in">
-            <div className="flex items-center gap-2">
-              <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" />
+          <div className="glass-panel p-4 rounded-2xl bg-rose-100/90 border border-rose-300 text-rose-950 dark:bg-rose-500/15 dark:border-rose-500/30 dark:text-rose-200 text-sm flex items-center justify-between gap-3 animate-fade-in shadow-xs">
+            <div className="flex items-center gap-2 font-medium">
+              <AlertCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0" />
               <span>{error}</span>
             </div>
             <button
               type="button"
               onClick={() => setError(null)}
-              className="text-xs px-3 py-1 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 font-semibold cursor-pointer transition"
+              className="text-xs px-3 py-1.5 rounded-xl bg-rose-200 hover:bg-rose-300 text-rose-950 dark:bg-rose-500/20 dark:hover:bg-rose-500/30 dark:text-rose-200 font-bold cursor-pointer transition"
             >
               Dismiss
             </button>
@@ -353,18 +353,18 @@ export default function App() {
 
         {/* Dashboard Content */}
         {loading ? (
-          <div className="glass-panel h-[480px] rounded-3xl flex flex-col items-center justify-center gap-4 text-slate-400">
+          <div className="glass-panel h-[480px] rounded-3xl flex flex-col items-center justify-center gap-4 text-slate-500 dark:text-slate-400 shadow-lg">
             <div className="relative">
-              <div className="w-16 h-16 border-4 border-cyan-400/20 border-t-cyan-400 rounded-full animate-spin" />
+              <div className="w-16 h-16 border-4 border-cyan-500/20 border-t-cyan-500 rounded-full animate-spin" />
               <div className="absolute inset-0 flex items-center justify-center">
-                <Cloud className="w-6 h-6 text-cyan-400 animate-pulse" />
+                <Cloud className="w-6 h-6 text-cyan-600 dark:text-cyan-400 animate-pulse" />
               </div>
             </div>
             <div className="text-center space-y-1">
-              <p className="text-lg font-bold text-slate-200">
+              <p className="text-lg font-black text-slate-900 dark:text-slate-200">
                 Fetching Atmospheric & Radar Telemetry...
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-600 dark:text-slate-400 font-semibold">
                 Connecting to High-Resolution Satellite Feeds
               </p>
             </div>
