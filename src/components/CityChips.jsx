@@ -14,7 +14,7 @@ export default function CityChips({ cities, currentCity, onSelect }) {
   return (
     <div className="relative flex items-center gap-2 w-full py-1">
       {/* Label */}
-      <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-cyan-800 dark:text-cyan-400/90 shrink-0 pl-1">
+      <div className="hidden sm:flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-cyan-900 dark:text-cyan-400 shrink-0 pl-1">
         <MapPin className="w-3.5 h-3.5 animate-pulse text-cyan-600 dark:text-cyan-400" />
         <span>Hotspots:</span>
       </div>
@@ -23,7 +23,7 @@ export default function CityChips({ cities, currentCity, onSelect }) {
       <button
         type="button"
         onClick={() => handleScroll("left")}
-        className="hidden sm:flex p-1.5 rounded-xl glass-pill text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-300 hover:scale-105 active:scale-95 transition cursor-pointer shrink-0 shadow-xs"
+        className="hidden sm:flex p-1.5 rounded-xl glass-pill text-slate-800 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-300 hover:scale-105 active:scale-95 transition cursor-pointer shrink-0 shadow-xs"
         title="Scroll left"
         aria-label="Scroll left"
       >
@@ -47,13 +47,13 @@ export default function CityChips({ cities, currentCity, onSelect }) {
               onClick={() => onSelect(city)}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all cursor-pointer shadow-xs ${
                 isSelected
-                  ? "bg-cyan-200/90 text-cyan-950 border border-cyan-400 shadow-md shadow-cyan-500/15 dark:bg-gradient-to-r dark:from-cyan-500/30 dark:to-blue-600/30 dark:text-cyan-300 dark:border-cyan-400/60 scale-[1.02]"
-                  : "glass-pill text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:border-cyan-400/50"
+                  ? "bg-cyan-600 text-white border border-cyan-700 shadow-md shadow-cyan-600/30 dark:bg-gradient-to-r dark:from-cyan-500/30 dark:to-blue-600/30 dark:text-cyan-300 dark:border-cyan-400/60 scale-[1.02]"
+                  : "glass-pill text-slate-800 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:border-cyan-400/50"
               }`}
             >
               {city.name}
               {isSelected && (
-                <span className="inline-block w-1.5 h-1.5 ml-2 rounded-full bg-cyan-600 dark:bg-cyan-400 animate-ping" />
+                <span className="inline-block w-1.5 h-1.5 ml-2 rounded-full bg-white dark:bg-cyan-400 animate-ping" />
               )}
             </button>
           );
@@ -64,7 +64,7 @@ export default function CityChips({ cities, currentCity, onSelect }) {
       <button
         type="button"
         onClick={() => handleScroll("right")}
-        className="hidden sm:flex p-1.5 rounded-xl glass-pill text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-300 hover:scale-105 active:scale-95 transition cursor-pointer shrink-0 shadow-xs"
+        className="hidden sm:flex p-1.5 rounded-xl glass-pill text-slate-800 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-300 hover:scale-105 active:scale-95 transition cursor-pointer shrink-0 shadow-xs"
         title="Scroll right"
         aria-label="Scroll right"
       >
