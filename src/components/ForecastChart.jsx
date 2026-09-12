@@ -33,7 +33,7 @@ export default function ForecastChart({
         return {
           dataKey: "windSpd",
           unit: " km/h",
-          stroke: "#9333ea",
+          stroke: "#7c3aed",
           fill: "url(#windGrad)",
           label: "Wind Speed",
           icon: Wind,
@@ -59,15 +59,15 @@ export default function ForecastChart({
       const p = payload[0].payload;
       return (
         <div className="glass-panel px-3.5 py-2.5 rounded-xl border border-cyan-500/40 shadow-xl backdrop-blur-xl text-xs space-y-1">
-          <div className="text-slate-500 dark:text-slate-400 font-semibold">{p.fullTime?.replace("T", " ")}</div>
-          <div className="flex items-center gap-2 font-extrabold text-slate-900 dark:text-white text-sm">
-            <span className="text-cyan-600 dark:text-cyan-400">{config.label}:</span>
+          <div className="text-slate-600 dark:text-slate-400 font-bold">{p.fullTime?.replace("T", " ")}</div>
+          <div className="flex items-center gap-2 font-black text-slate-900 dark:text-white text-sm">
+            <span className="text-cyan-700 dark:text-cyan-400">{config.label}:</span>
             <span>
               {payload[0].value}
               {config.unit}
             </span>
           </div>
-          <div className="text-[11px] text-slate-600 dark:text-slate-400 flex items-center gap-2 pt-0.5 font-medium">
+          <div className="text-[11px] text-slate-600 dark:text-slate-400 flex items-center gap-2 pt-0.5 font-bold">
             <span>Rain: {p.rainProb}%</span>
             <span>•</span>
             <span>Wind: {p.windSpd} km/h</span>
@@ -79,17 +79,17 @@ export default function ForecastChart({
   };
 
   return (
-    <div className="lg:col-span-3 glass-panel p-6 sm:p-7 rounded-3xl space-y-6">
+    <div className="lg:col-span-3 glass-panel p-5 sm:p-7 rounded-3xl space-y-6 shadow-lg">
       {/* Header with Tab switcher */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h3 className="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 icon-glow-cyan">
+          <h3 className="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
+            <div className="p-2 rounded-xl bg-cyan-100 text-cyan-700 border border-cyan-300 dark:bg-cyan-500/15 dark:text-cyan-400 dark:border-cyan-500/30 icon-glow-cyan shadow-xs">
               <Clock className="w-4 h-4" />
             </div>
             <span>24-Hour Predictive Telemetry</span>
           </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 font-semibold">
             Dynamic hourly graph tracking temperature, rain probability & wind velocity
           </p>
         </div>
@@ -101,8 +101,8 @@ export default function ForecastChart({
             onClick={() => setActiveTab("temp")}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeTab === "temp"
-                ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/30"
-                : "text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-slate-200"
+                ? "bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md shadow-cyan-600/30"
+                : "text-slate-700 dark:text-slate-400 hover:text-slate-950 dark:hover:text-slate-200"
             }`}
           >
             Temperature
@@ -112,8 +112,8 @@ export default function ForecastChart({
             onClick={() => setActiveTab("rain")}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeTab === "rain"
-                ? "bg-gradient-to-r from-blue-500 to-sky-600 text-white shadow-md shadow-blue-500/30"
-                : "text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-slate-200"
+                ? "bg-gradient-to-r from-blue-600 to-sky-600 text-white shadow-md shadow-blue-600/30"
+                : "text-slate-700 dark:text-slate-400 hover:text-slate-950 dark:hover:text-slate-200"
             }`}
           >
             Rain Chance
@@ -123,8 +123,8 @@ export default function ForecastChart({
             onClick={() => setActiveTab("wind")}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeTab === "wind"
-                ? "bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md shadow-purple-500/30"
-                : "text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-slate-200"
+                ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/30"
+                : "text-slate-700 dark:text-slate-400 hover:text-slate-950 dark:hover:text-slate-200"
             }`}
           >
             Wind Speed
@@ -146,8 +146,8 @@ export default function ForecastChart({
                 <stop offset="95%" stopColor="#0284c7" stopOpacity={0.0} />
               </linearGradient>
               <linearGradient id="windGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#9333ea" stopOpacity={0.45} />
-                <stop offset="95%" stopColor="#9333ea" stopOpacity={0.0} />
+                <stop offset="5%" stopColor="#7c3aed" stopOpacity={0.45} />
+                <stop offset="95%" stopColor="#7c3aed" stopOpacity={0.0} />
               </linearGradient>
             </defs>
             <XAxis
@@ -181,7 +181,7 @@ export default function ForecastChart({
 
       {/* Hour-by-Hour Horizontal Cards Strip */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400 font-bold px-1">
+        <div className="flex items-center justify-between text-xs text-slate-800 dark:text-slate-400 font-black px-1">
           <span>Hourly Snapshot</span>
           <span className="font-semibold text-slate-500">Swipe or scroll horizontally &rarr;</span>
         </div>
@@ -189,24 +189,24 @@ export default function ForecastChart({
           {data.map((item, idx) => (
             <div
               key={`${item.fullTime}-${idx}`}
-              className="glass-card p-3 rounded-2xl min-w-[85px] sm:min-w-[95px] flex flex-col items-center justify-between gap-2 shrink-0 group hover:border-cyan-400/50 shadow-xs"
+              className="glass-card p-3 rounded-2xl min-w-[85px] sm:min-w-[95px] flex flex-col items-center justify-between gap-2 shrink-0 group hover:border-cyan-500 shadow-xs"
             >
-              <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition">
+              <span className="text-[11px] font-black text-slate-800 dark:text-slate-400 group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition">
                 {item.time}
               </span>
-              <div className="p-2 rounded-xl bg-slate-100/90 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+              <div className="p-2.5 rounded-xl bg-sky-50 border border-sky-200 dark:bg-slate-900/60 dark:border-slate-800">
                 <WeatherIcon name={item.icon} className="w-5 h-5 text-cyan-600 dark:text-cyan-400 group-hover:scale-110 transition" />
               </div>
               <span className="text-sm font-black text-slate-900 dark:text-white">
                 {item.temp}°{tempUnit}
               </span>
               {item.rainProb > 0 ? (
-                <span className="text-[10px] font-bold text-sky-800 dark:text-sky-300 bg-sky-100 dark:bg-sky-500/15 border border-sky-300 dark:border-sky-500/30 px-1.5 py-0.5 rounded-md flex items-center gap-0.5">
+                <span className="text-[10px] font-black text-sky-900 dark:text-sky-300 bg-sky-100 dark:bg-sky-500/15 border border-sky-300 dark:border-sky-500/30 px-1.5 py-0.5 rounded-md flex items-center gap-0.5">
                   <Droplets className="w-2.5 h-2.5" />
                   {item.rainProb}%
                 </span>
               ) : (
-                <span className="text-[10px] text-slate-500 font-medium">0% rain</span>
+                <span className="text-[10px] text-slate-500 font-bold">0% rain</span>
               )}
             </div>
           ))}
