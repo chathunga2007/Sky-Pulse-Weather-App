@@ -9,7 +9,7 @@ export default function AirQualityPanel({ airQuality, aqiInfo, current }) {
   const precipitation = current?.precipitation ?? 0;
 
   return (
-    <div className="glass-panel p-6 sm:p-7 rounded-3xl flex flex-col justify-between relative overflow-hidden">
+    <div className="glass-panel p-5 sm:p-7 rounded-3xl flex flex-col justify-between relative overflow-hidden shadow-lg">
       {/* Background soft glow */}
       <div className="absolute -top-10 -right-10 w-48 h-48 bg-emerald-500/10 rounded-full blur-[70px] pointer-events-none" />
 
@@ -17,46 +17,46 @@ export default function AirQualityPanel({ airQuality, aqiInfo, current }) {
         {/* Title row */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 icon-glow-emerald">
+            <div className="p-2 rounded-xl bg-emerald-100 text-emerald-700 border border-emerald-300 dark:bg-emerald-500/15 dark:text-emerald-500 dark:border-emerald-500/30 icon-glow-emerald shadow-xs">
               <Activity className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-base font-extrabold text-slate-900 dark:text-white tracking-wide">
+              <h3 className="text-base font-black text-slate-900 dark:text-white tracking-wide">
                 Air & Atmosphere
               </h3>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">EPA US AQI Standard</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-semibold">EPA US AQI Standard</p>
             </div>
           </div>
 
           <span
-            className={`text-xs font-bold px-3 py-1 rounded-full border backdrop-blur-md shadow-xs ${
-              aqiInfo?.bg || "bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-500/20 dark:text-emerald-300 dark:border-emerald-500/30"
-            } ${aqiInfo?.color || "text-emerald-800 dark:text-emerald-300"}`}
+            className={`text-xs font-black px-3 py-1 rounded-full border backdrop-blur-md shadow-xs ${
+              aqiInfo?.bg || "bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-500/20 dark:text-emerald-300 dark:border-emerald-500/30"
+            } ${aqiInfo?.color || "text-emerald-900 dark:text-emerald-300"}`}
           >
             {aqiInfo?.label || "Good"}
           </span>
         </div>
 
-        {/* AQI Score Gauge Card */}
-        <div className="p-5 rounded-2xl bg-slate-100/90 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800/80 shadow-inner">
+        {/* AQI Score Gauge Card - High contrast white card in light mode */}
+        <div className="p-5 rounded-2xl bg-white/90 dark:bg-slate-950/50 border border-slate-200/90 dark:border-slate-800/80 shadow-sm">
           <div className="flex items-baseline justify-between">
             <div className="flex items-baseline gap-2">
               <span className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
                 {aqiValue}
               </span>
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+              <span className="text-xs font-black uppercase tracking-wider text-slate-600 dark:text-slate-400">
                 AQI Index
               </span>
             </div>
             <div className="text-right">
-              <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+              <span className="text-xs font-black text-slate-800 dark:text-slate-300">
                 {aqiInfo?.label || "Clean Air"}
               </span>
             </div>
           </div>
 
           {/* Color-coded spectrum track */}
-          <div className="w-full h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full mt-3.5 overflow-hidden p-0.5 border border-slate-300 dark:border-slate-700/50">
+          <div className="w-full h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full mt-3.5 overflow-hidden p-0.5 border border-slate-300 dark:border-slate-700/50 shadow-inner">
             <div
               className={`h-full rounded-full transition-all duration-1000 ${
                 aqiValue <= 50
@@ -71,7 +71,7 @@ export default function AirQualityPanel({ airQuality, aqiInfo, current }) {
             />
           </div>
 
-          <p className="text-xs text-slate-700 dark:text-slate-300/90 mt-3 leading-relaxed flex items-start gap-1.5 font-medium">
+          <p className="text-xs text-slate-700 dark:text-slate-300 mt-3 leading-relaxed flex items-start gap-1.5 font-bold">
             <ShieldAlert className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
             <span>{aqiInfo?.advice || "Air quality is considered satisfactory, and air pollution poses little or no risk."}</span>
           </p>
@@ -79,23 +79,23 @@ export default function AirQualityPanel({ airQuality, aqiInfo, current }) {
 
         {/* Pollutants Breakdown */}
         <div className="grid grid-cols-2 gap-2.5">
-          <div className="p-3 rounded-2xl bg-slate-100/90 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-800/60 shadow-xs">
-            <span className="text-slate-600 dark:text-slate-400 block text-[10px] font-bold uppercase tracking-wider">
+          <div className="p-3.5 rounded-2xl bg-white/90 dark:bg-slate-950/40 border border-slate-200/90 dark:border-slate-800/60 shadow-xs">
+            <span className="text-slate-600 dark:text-slate-400 block text-[10px] font-black uppercase tracking-wider">
               PM2.5 Particles
             </span>
             <div className="flex items-baseline gap-1 mt-1">
               <span className="text-lg font-black text-slate-900 dark:text-slate-100">{pm25}</span>
-              <span className="text-[10px] text-slate-500 dark:text-slate-400">µg/m³</span>
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">µg/m³</span>
             </div>
           </div>
 
-          <div className="p-3 rounded-2xl bg-slate-100/90 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-800/60 shadow-xs">
-            <span className="text-slate-600 dark:text-slate-400 block text-[10px] font-bold uppercase tracking-wider">
+          <div className="p-3.5 rounded-2xl bg-white/90 dark:bg-slate-950/40 border border-slate-200/90 dark:border-slate-800/60 shadow-xs">
+            <span className="text-slate-600 dark:text-slate-400 block text-[10px] font-black uppercase tracking-wider">
               PM10 Particles
             </span>
             <div className="flex items-baseline gap-1 mt-1">
               <span className="text-lg font-black text-slate-900 dark:text-slate-100">{pm10}</span>
-              <span className="text-[10px] text-slate-500 dark:text-slate-400">µg/m³</span>
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">µg/m³</span>
             </div>
           </div>
         </div>
@@ -106,16 +106,16 @@ export default function AirQualityPanel({ airQuality, aqiInfo, current }) {
         <div className="flex items-center gap-2">
           <Cloud className="w-4 h-4 text-cyan-600 dark:text-cyan-400 shrink-0" />
           <div>
-            <span className="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Cloud Cover</span>
-            <strong className="text-slate-900 dark:text-white font-bold">{cloudCover}%</strong>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 block font-semibold">Cloud Cover</span>
+            <strong className="text-slate-900 dark:text-white font-black">{cloudCover}%</strong>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           <CloudRain className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
           <div>
-            <span className="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Precipitation</span>
-            <strong className="text-slate-900 dark:text-white font-bold">{precipitation} mm</strong>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 block font-semibold">Precipitation</span>
+            <strong className="text-slate-900 dark:text-white font-black">{precipitation} mm</strong>
           </div>
         </div>
       </div>
