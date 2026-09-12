@@ -22,30 +22,30 @@ export default function Header({
           <div className="relative">
             <div className="absolute inset-0 bg-cyan-400/20 blur-lg rounded-2xl" />
             <img
-              className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl relative z-10 border border-white/10 shadow-lg object-contain bg-slate-900/60 p-1"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl relative z-10 border border-slate-200/80 dark:border-white/10 shadow-lg object-contain bg-white/90 dark:bg-slate-900/60 p-1"
               src="./app_logo.png"
               alt="SkyPulse Logo"
             />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-black tracking-tight bg-gradient-to-r from-white via-slate-100 to-cyan-300 bg-clip-text text-transparent">
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight bg-gradient-to-r from-slate-900 via-sky-800 to-cyan-600 dark:from-white dark:via-slate-100 dark:to-cyan-300 bg-clip-text text-transparent">
                 SkyPulse
               </h1>
-              <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 uppercase tracking-widest flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+              <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full dark:bg-cyan-500/15 dark:text-cyan-300 dark:border-cyan-500/30 bg-cyan-100 text-cyan-800 border border-cyan-300 uppercase tracking-widest flex items-center gap-1.5 shadow-xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-ping" />
                 Live Radar
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 font-medium hidden sm:block">
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:block">
               Atmospheric Telemetry & Forecast
             </p>
           </div>
         </div>
 
         {/* Mobile Clock */}
-        <div className="lg:hidden text-right text-xs text-slate-400 font-medium">
-          <div className="text-slate-200 font-bold">
+        <div className="lg:hidden text-right text-xs text-slate-600 dark:text-slate-400 font-medium">
+          <div className="text-slate-900 dark:text-slate-200 font-bold">
             {currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
           </div>
           <div className="text-[10px] text-slate-500">
@@ -67,21 +67,21 @@ export default function Header({
           onClick={handleCurrentLocation}
           disabled={locating}
           title="Use my current GPS location"
-          className="glass-pill px-3.5 py-2 rounded-2xl text-xs font-semibold text-cyan-300 flex items-center gap-1.5 hover:border-cyan-400/50 cursor-pointer active:scale-95 disabled:opacity-50 transition-all"
+          className="glass-pill px-3.5 py-2 rounded-2xl text-xs font-bold text-cyan-800 dark:text-cyan-300 flex items-center gap-1.5 hover:border-cyan-400/50 cursor-pointer active:scale-95 disabled:opacity-50 transition-all shadow-xs"
         >
-          <Navigation className={`w-3.5 h-3.5 ${locating ? "animate-spin text-cyan-400" : ""}`} />
+          <Navigation className={`w-3.5 h-3.5 ${locating ? "animate-spin text-cyan-500" : "text-cyan-600 dark:text-cyan-400"}`} />
           <span className="hidden sm:inline">GPS Location</span>
         </button>
 
         {/* Temperature Unit Switcher */}
-        <div className="glass-pill p-1 rounded-2xl flex items-center">
+        <div className="glass-pill p-1 rounded-2xl flex items-center shadow-xs">
           <button
             type="button"
             onClick={() => setTempUnit("C")}
             className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               tempUnit === "C"
                 ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/30"
-                : "text-slate-400 hover:text-slate-200"
+                : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
             }`}
           >
             °C
@@ -92,7 +92,7 @@ export default function Header({
             className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               tempUnit === "F"
                 ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/30"
-                : "text-slate-400 hover:text-slate-200"
+                : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
             }`}
           >
             °F
@@ -105,9 +105,9 @@ export default function Header({
           onClick={handleRefresh}
           disabled={refreshing || loading}
           title="Refresh live telemetry"
-          className="glass-pill p-2 rounded-2xl text-slate-300 hover:text-cyan-300 cursor-pointer active:scale-95 transition"
+          className="glass-pill p-2 rounded-2xl text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-300 cursor-pointer active:scale-95 transition shadow-xs"
         >
-          <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin text-cyan-400" : ""}`} />
+          <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin text-cyan-500" : ""}`} />
         </button>
 
         {/* Dark/Light mode toggle */}
@@ -115,7 +115,7 @@ export default function Header({
           type="button"
           onClick={() => setDarkMode((prev) => !prev)}
           title={darkMode ? "Switch to Daylight Mode" : "Switch to Dark Mode"}
-          className="glass-pill px-3 py-2 rounded-2xl flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all text-xs font-bold"
+          className="glass-pill px-3 py-2 rounded-2xl flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all text-xs font-bold shadow-xs"
         >
           {darkMode ? (
             <>
@@ -124,18 +124,18 @@ export default function Header({
             </>
           ) : (
             <>
-              <Moon className="w-4 h-4 text-indigo-500" />
-              <span className="text-indigo-900 hidden sm:inline">Dark</span>
+              <Moon className="w-4 h-4 text-indigo-600" />
+              <span className="text-indigo-950 font-extrabold hidden sm:inline">Dark</span>
             </>
           )}
         </button>
 
         {/* Desktop Clock */}
-        <div className="hidden lg:flex flex-col text-right pl-2 border-l border-slate-800 text-xs">
-          <span className="font-bold text-slate-200">
+        <div className="hidden lg:flex flex-col text-right pl-2 border-l border-slate-300 dark:border-slate-800 text-xs">
+          <span className="font-bold text-slate-900 dark:text-slate-200">
             {currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
           </span>
-          <span className="text-[10px] text-slate-400">
+          <span className="text-[10px] text-slate-500 dark:text-slate-400">
             {currentTime.toLocaleDateString([], { month: "short", day: "numeric" })}
           </span>
         </div>
