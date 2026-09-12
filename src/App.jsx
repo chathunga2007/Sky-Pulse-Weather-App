@@ -1,195 +1,419 @@
 import React, { useState, useEffect } from "react";
-import { Search, MapPin, Wind, Droplets, Gauge, Sun, CloudRain, ShieldAlert } from "lucide-react";
-import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from "recharts";
-import { getCityCoordinates, fetchComprehensiveWeather } from "./services/weatherApi";
-import { getWeatherMeta } from "./utils/weatherCodes";
+import { AlertCircle, Cloud } from "lucide-react";
+import Header from "./components/Header";
+import SearchBar from "./components/SearchBar";
+import CityChips from "./components/CityChips";
+import HeroCard from "./components/HeroCard";
+import AirQualityPanel from "./components/AirQualityPanel";
+import ForecastChart from "./components/ForecastChart";
+import DetailedMetrics from "./components/DetailedMetrics";
+import DailyForecast from "./components/DailyForecast";
+import Footer from "./components/Footer";
+import {
+  fetchComprehensiveWeather,
+  fetchAirQuality,
+  reverseGeocode,
+  searchCities,
+} from "./services/weatherApi";
+import {
+  getWeatherMeta,
+  getAqiStatus,
+  getUvStatus,
+  formatTemp,
+} from "./utils/weatherCodes";
+import "./index.css";
+
+const POPULAR_CITIES = [
+  { name: "Colombo", country: "Sri Lanka", lat: 6.9271, lon: 79.8612 },
+  { name: "Kandy", country: "Sri Lanka", lat: 7.2906, lon: 80.6337 },
+  { name: "Galle", country: "Sri Lanka", lat: 6.0535, lon: 80.221 },
+  { name: "London", country: "United Kingdom", lat: 51.5074, lon: -0.1278 },
+  { name: "Tokyo", country: "Japan", lat: 35.6762, lon: 139.6503 },
+  { name: "New York", country: "United States", lat: 40.7128, lon: -74.006 },
+  { name: "Dubai", country: "UAE", lat: 25.2048, lon: 55.2708 },
+  { name: "Paris", country: "France", lat: 48.8566, lon: 2.3522 },
+  { name: "Sydney", country: "Australia", lat: -33.8688, lon: 151.2093 },
+  { name: "Singapore", country: "Singapore", lat: 1.3521, lon: 103.8198 },
+];
 
 export default function App() {
-  const [cityInput, setCityInput] = useState("");
-  const [locationName, setLocationName] = useState("Colombo, Sri Lanka");
+  // ==== Search States ====
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  // ==== City & Weather States ====
+  const [currentCity, setCurrentCity] = useState({
+    name: "Colombo",
+    country: "Sri Lanka",
+    lat: 6.9271,
+    lon: 79.8612,
+  });
+
   const [weatherData, setWeatherData] = useState(null);
+  const [airQuality, setAirQuality] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [locating, setLocating] = useState(false);
   const [error, setError] = useState(null);
 
-  const loadWeather = async (lat, lon, label) => {
+  // ==== Preferences ====
+  const [tempUnit, setTempUnit] = useState("C");
+  const [activeChartTab, setActiveChartTab] = useState("temp");
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [darkMode, setDarkMode] = useState(() => {
     try {
-      setLoading(true);
-      setError(null);
-      const data = await fetchComprehensiveWeather(lat, lon);
-      setWeatherData(data);
-      if (label) setLocationName(label);
-    } catch (err) {
-      setError("Failed to fetch weather data. Please try again.");
-    } finally {
-      setLoading(false);
+      const saved = localStorage.getItem("skyPulseDarkMode");
+      return saved !== null ? JSON.parse(saved) : true;
+    } catch {
+      return true;
     }
-  };
+  });
 
+  // Clock Ticker
   useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => loadWeather(pos.coords.latitude, pos.coords.longitude, "Your Current Location"),
-        () => loadWeather(6.9271, 79.8612, "Colombo, Sri Lanka")
-      );
-    } else {
-      loadWeather(6.9271, 79.8612, "Colombo, Sri Lanka");
-    }
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!cityInput.trim()) return;
+  // Dark Mode Sync
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
     try {
-      setLoading(true);
-      const loc = await getCityCoordinates(cityInput);
-      await loadWeather(loc.latitude, loc.longitude, `${loc.name}, ${loc.country}`);
-      setCityInput("");
+      localStorage.setItem("skyPulseDarkMode", JSON.stringify(darkMode));
+    } catch (e) {
+      console.warn("Storage not available:", e);
+    }
+  }, [darkMode]);
+
+  // Load weather and AQI
+  const loadWeatherData = async (lat, lon, cityName, countryName, isRefresh = false) => {
+    try {
+      if (isRefresh) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
+      }
+      setError(null);
+
+      const [weather, aqi] = await Promise.all([
+        fetchComprehensiveWeather(lat, lon),
+        fetchAirQuality(lat, lon),
+      ]);
+
+      setWeatherData(weather);
+      setAirQuality(aqi);
+
+      if (cityName) {
+        setCurrentCity({
+          name: cityName,
+          country: countryName || "",
+          lat,
+          lon,
+        });
+      }
     } catch (err) {
-      setError(err.message || "Location not found");
+      console.error(err);
+      setError("Failed to fetch weather data. Please check network connection.");
+    } finally {
       setLoading(false);
+      setRefreshing(false);
+      setLocating(false);
     }
   };
 
-  const current = weatherData?.current;
-  const meta = current ? getWeatherMeta(current.weather_code) : null;
+  // Initial Load on mount
+  useEffect(() => {
+    let ignore = false;
+    const init = async () => {
+      try {
+        const [weather, aqi] = await Promise.all([
+          fetchComprehensiveWeather(currentCity.lat, currentCity.lon),
+          fetchAirQuality(currentCity.lat, currentCity.lon),
+        ]);
+        if (!ignore) {
+          setWeatherData(weather);
+          setAirQuality(aqi);
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error(err);
+        if (!ignore) {
+          setError("Failed to initialize telemetry. Please refresh.");
+          setLoading(false);
+        }
+      }
+    };
+    init();
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
-  const hourlyChartData = weatherData?.hourly?.time?.slice(0, 12).map((time, idx) => ({
-    time: time.split("T")[1].slice(0, 5),
-    temp: weatherData.hourly.temperature_2m[idx],
-  })) || [];
+  // Select city handler
+  const handleSelectCity = (item) => {
+    setQuery("");
+    setSuggestions([]);
+    setShowDropdown(false);
+    loadWeatherData(
+      item.latitude,
+      item.longitude,
+      item.name,
+      item.country ? `${item.admin1 ? item.admin1 + ", " : ""}${item.country}` : item.admin1
+    );
+  };
+
+  // Search submit handler
+  const handleSearchSubmit = async (e) => {
+    e.preventDefault();
+    if (!query.trim()) return;
+
+    if (suggestions.length > 0) {
+      handleSelectCity(suggestions[0]);
+    } else {
+      setIsSearching(true);
+      const results = await searchCities(query);
+      setIsSearching(false);
+      if (results.length > 0) {
+        handleSelectCity(results[0]);
+      } else {
+        setError(`City "${query}" could not be located. Try another city.`);
+      }
+    }
+  };
+
+  // Current GPS location trigger
+  const handleCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by your browser");
+      return;
+    }
+    setLocating(true);
+    setError(null);
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        const placeName = await reverseGeocode(latitude, longitude);
+        await loadWeatherData(latitude, longitude, placeName, "Live GPS Location");
+      },
+      (geoErr) => {
+        console.warn("Geolocation denied or error:", geoErr);
+        setLocating(false);
+        setError("Unable to retrieve location. Please check browser permissions.");
+      },
+      { timeout: 10000 }
+    );
+  };
+
+  // Refresh current city
+  const handleRefresh = () => {
+    loadWeatherData(
+      currentCity.lat,
+      currentCity.lon,
+      currentCity.name,
+      currentCity.country,
+      true
+    );
+  };
+
+  // ==== Derived Data ====
+  const current = weatherData?.current;
+  const daily = weatherData?.daily;
+  const hourly = weatherData?.hourly;
+
+  const meta = current
+    ? getWeatherMeta(current.weather_code, current.is_day)
+    : getWeatherMeta(0, 1);
+
+  const aqiInfo = airQuality ? getAqiStatus(airQuality.us_aqi) : null;
+  const uvInfo = daily?.uv_index_max?.[0] != null ? getUvStatus(daily.uv_index_max[0]) : null;
+
+  // Next 24 hours array for chart and hourly strip
+  const currentHourTime = current?.time ? current.time.slice(0, 13) : "";
+  let startIndex = 0;
+  if (hourly?.time && currentHourTime) {
+    const foundIdx = hourly.time.findIndex((t) => t.startsWith(currentHourTime));
+    if (foundIdx !== -1) startIndex = foundIdx;
+  }
+
+  const next24Hours = hourly?.time
+    ? hourly.time.slice(startIndex, startIndex + 24).map((timeStr, i) => {
+        const actualIdx = startIndex + i;
+        const rawTemp = hourly.temperature_2m[actualIdx];
+        const displayTemp =
+          tempUnit === "F" ? Math.round((rawTemp * 9) / 5 + 32) : Math.round(rawTemp);
+        const rainProb = hourly.precipitation_probability?.[actualIdx] ?? 0;
+        const windSpd = Math.round(hourly.wind_speed_10m?.[actualIdx] ?? 0);
+        const code = hourly.weather_code?.[actualIdx] ?? 0;
+        const hourMeta = getWeatherMeta(code, 1);
+        const timeFormatted = timeStr.split("T")[1].slice(0, 5);
+
+        return {
+          time: timeFormatted,
+          fullTime: timeStr,
+          temp: displayTemp,
+          rawTemp,
+          rainProb,
+          windSpd,
+          code,
+          icon: hourMeta.icon,
+        };
+      })
+    : [];
+
+  const formatTimeStr = (isoString) => {
+    if (!isoString) return "--:--";
+    try {
+      const d = new Date(isoString);
+      return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
+    } catch {
+      return "--:--";
+    }
+  };
+
+  const sunriseFormatted = daily?.sunrise?.[0] ? formatTimeStr(daily.sunrise[0]) : "6:05 AM";
+  const sunsetFormatted = daily?.sunset?.[0] ? formatTimeStr(daily.sunset[0]) : "6:15 PM";
 
   return (
-    <div className="min-h-screen bg-[#07090E] text-slate-100 p-4 md:p-8 flex flex-col items-center justify-center relative overflow-hidden">
-      {/* Background Neon Glow Ambient */}
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+    <div className="min-h-screen bg-[#030508] text-slate-100 flex flex-col relative overflow-x-hidden transition-colors duration-500">
+      {/* Dynamic Animated Ambient Orbs */}
+      <div
+        className="fixed -top-36 -left-36 w-[550px] h-[550px] rounded-full blur-[140px] pointer-events-none transition-colors duration-1000 orb-a"
+        style={{ backgroundColor: meta.orb1 || "rgba(6, 182, 212, 0.22)" }}
+      />
+      <div
+        className="fixed -bottom-36 -right-36 w-[600px] h-[600px] rounded-full blur-[150px] pointer-events-none transition-colors duration-1000 orb-b"
+        style={{ backgroundColor: meta.orb2 || "rgba(99, 102, 241, 0.22)" }}
+      />
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-cyan-900/10 rounded-full blur-[180px] pointer-events-none orb-c" />
 
-      <div className="w-full max-w-5xl z-10 space-y-6">
-        {/* Search Header */}
-        <header className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-900/40 p-4 rounded-2xl border border-slate-800/80 backdrop-blur-xl shadow-2xl">
-          <div className="flex items-center gap-2 text-cyan-400 font-semibold tracking-wide">
-            <MapPin className="w-5 h-5 animate-pulse" />
-            <span className="text-slate-200 text-lg">{locationName}</span>
-          </div>
-          <form onSubmit={handleSearch} className="relative w-full sm:w-80">
-            <input
-              type="text"
-              placeholder="Search city..."
-              value={cityInput}
-              onChange={(e) => setCityInput(e.target.value)}
-              className="w-full pl-4 pr-10 py-2 rounded-xl bg-slate-950/60 border border-slate-700/60 text-sm focus:outline-none focus:border-cyan-400 transition placeholder:text-slate-500"
+      {/* Main Content Container */}
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 z-10 space-y-6">
+        {/* Unified Top Glass Header with Integrated Controls */}
+        <Header
+          currentTime={currentTime}
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+          locating={locating}
+          handleCurrentLocation={handleCurrentLocation}
+          tempUnit={tempUnit}
+          setTempUnit={setTempUnit}
+          refreshing={refreshing}
+          loading={loading}
+          handleRefresh={handleRefresh}
+          searchComponent={
+            <SearchBar
+              query={query}
+              setQuery={setQuery}
+              suggestions={suggestions}
+              setSuggestions={setSuggestions}
+              isSearching={isSearching}
+              setIsSearching={setIsSearching}
+              showDropdown={showDropdown}
+              setShowDropdown={setShowDropdown}
+              handleSelectCity={handleSelectCity}
+              handleSearchSubmit={handleSearchSubmit}
             />
-            <button type="submit" className="absolute right-3 top-2.5 text-slate-400 hover:text-cyan-400 transition">
-              <Search className="w-4 h-4" />
-            </button>
-          </form>
-        </header>
+          }
+        />
 
+        {/* Quick Hotspot Cities Carousel */}
+        <CityChips
+          cities={POPULAR_CITIES}
+          currentCity={currentCity}
+          onSelect={(city) =>
+            loadWeatherData(city.lat, city.lon, city.name, city.country)
+          }
+        />
+
+        {/* Error Alert */}
         {error && (
-          <div className="p-3 bg-rose-500/10 border border-rose-500/30 text-rose-400 rounded-xl text-sm text-center">
-            {error}
+          <div className="glass-panel p-4 rounded-2xl bg-rose-500/15 border-rose-500/30 text-rose-200 text-sm flex items-center justify-between gap-3 animate-fade-in">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" />
+              <span>{error}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setError(null)}
+              className="text-xs px-3 py-1 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 font-semibold cursor-pointer transition"
+            >
+              Dismiss
+            </button>
           </div>
         )}
 
+        {/* Dashboard Content */}
         {loading ? (
-          <div className="h-96 flex items-center justify-center text-slate-400">
-            <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mr-3" />
-            Synchronizing live radar data...
+          <div className="glass-panel h-[480px] rounded-3xl flex flex-col items-center justify-center gap-4 text-slate-400">
+            <div className="relative">
+              <div className="w-16 h-16 border-4 border-cyan-400/20 border-t-cyan-400 rounded-full animate-spin" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Cloud className="w-6 h-6 text-cyan-400 animate-pulse" />
+              </div>
+            </div>
+            <div className="text-center space-y-1">
+              <p className="text-lg font-bold text-slate-200">
+                Fetching Atmospheric & Radar Telemetry...
+              </p>
+              <p className="text-xs text-slate-400">
+                Connecting to High-Resolution Satellite Feeds
+              </p>
+            </div>
           </div>
-        ) : (
-          <>
-            {/* Main Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Primary Card */}
-              <div className="md:col-span-2 bg-gradient-to-br from-slate-900/60 to-slate-950/60 border border-slate-800 p-8 rounded-3xl backdrop-blur-2xl relative overflow-hidden shadow-2xl flex flex-col justify-between">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h1 className="text-7xl font-extrabold tracking-tighter text-white">
-                      {Math.round(current.temperature_2m)}°<span className="text-cyan-400 text-5xl">C</span>
-                    </h1>
-                    <p className="text-lg text-cyan-300/90 font-medium mt-1">{meta.label}</p>
-                    <p className="text-xs text-slate-400 mt-1">Feels like {Math.round(current.apparent_temperature)}°C</p>
-                  </div>
-                  <div className="p-4 bg-slate-800/40 border border-slate-700/50 rounded-2xl">
-                    <CloudRain className="w-12 h-12 text-cyan-400" />
-                  </div>
-                </div>
-
-                {/* Hourly Micro-Graph */}
-                <div className="h-32 w-full mt-6">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={hourlyChartData}>
-                      <defs>
-                        <linearGradient id="tempGradient" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#00F2FE" stopOpacity={0.4}/>
-                          <stop offset="95%" stopColor="#00F2FE" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <XAxis dataKey="time" stroke="#475569" fontSize={11} tickLine={false} />
-                      <Tooltip contentStyle={{ backgroundColor: "#0F172A", borderColor: "#334155", borderRadius: "8px" }} />
-                      <Area type="monotone" dataKey="temp" stroke="#00F2FE" strokeWidth={2} fillOpacity={1} fill="url(#tempGradient)" />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-
-              {/* Metrics Column */}
-              <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
-                <div className="bg-slate-900/50 border border-slate-800/80 p-5 rounded-2xl backdrop-blur-lg flex items-center gap-4">
-                  <div className="p-3 bg-cyan-500/10 rounded-xl text-cyan-400"><Wind className="w-6 h-6" /></div>
-                  <div>
-                    <p className="text-xs text-slate-400 uppercase font-medium">Wind Speed</p>
-                    <p className="text-xl font-bold">{current.wind_speed_10m} <span className="text-sm font-normal text-slate-400">km/h</span></p>
-                  </div>
-                </div>
-
-                <div className="bg-slate-900/50 border border-slate-800/80 p-5 rounded-2xl backdrop-blur-lg flex items-center gap-4">
-                  <div className="p-3 bg-blue-500/10 rounded-xl text-blue-400"><Droplets className="w-6 h-6" /></div>
-                  <div>
-                    <p className="text-xs text-slate-400 uppercase font-medium">Humidity</p>
-                    <p className="text-xl font-bold">{current.relative_humidity_2m}%</p>
-                  </div>
-                </div>
-
-                <div className="bg-slate-900/50 border border-slate-800/80 p-5 rounded-2xl backdrop-blur-lg flex items-center gap-4">
-                  <div className="p-3 bg-amber-500/10 rounded-xl text-amber-400"><Sun className="w-6 h-6" /></div>
-                  <div>
-                    <p className="text-xs text-slate-400 uppercase font-medium">Max UV Index</p>
-                    <p className="text-xl font-bold">{weatherData?.daily?.uv_index_max[0] ?? "N/A"}</p>
-                  </div>
-                </div>
-
-                <div className="bg-slate-900/50 border border-slate-800/80 p-5 rounded-2xl backdrop-blur-lg flex items-center gap-4">
-                  <div className="p-3 bg-emerald-500/10 rounded-xl text-emerald-400"><Gauge className="w-6 h-6" /></div>
-                  <div>
-                    <p className="text-xs text-slate-400 uppercase font-medium">Pressure</p>
-                    <p className="text-xl font-bold">{Math.round(current.surface_pressure)} <span className="text-sm font-normal text-slate-400">hPa</span></p>
-                  </div>
-                </div>
-              </div>
+        ) : weatherData && current ? (
+          <div className="space-y-6">
+            {/* Primary Hero Row: Weather Display + Air Quality Panel */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <HeroCard
+                current={current}
+                daily={daily}
+                meta={meta}
+                currentCity={currentCity}
+                currentTime={currentTime}
+                tempUnit={tempUnit}
+                formatTemp={formatTemp}
+                sunrise={sunriseFormatted}
+                sunset={sunsetFormatted}
+              />
+              <AirQualityPanel
+                airQuality={airQuality}
+                aqiInfo={aqiInfo}
+                current={current}
+                uvInfo={uvInfo}
+              />
             </div>
 
-            {/* 7-Day Forecast Row */}
-            <div className="bg-slate-900/40 border border-slate-800/80 p-6 rounded-3xl backdrop-blur-xl">
-              <h3 className="text-sm font-semibold uppercase text-slate-400 mb-4 tracking-wider">7-Day Forecast</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3">
-                {weatherData?.daily?.time?.map((date, idx) => (
-                  <div key={date} className="bg-slate-950/40 border border-slate-800/50 p-4 rounded-xl flex flex-col items-center justify-between text-center">
-                    <span className="text-xs text-slate-400 font-medium">
-                      {new Date(date).toLocaleDateString("en-US", { weekday: "short" })}
-                    </span>
-                    <span className="text-sm font-semibold my-2 text-cyan-300">
-                      {Math.round(weatherData.daily.temperature_2m_max[idx])}°
-                    </span>
-                    <span className="text-xs text-slate-500">
-                      {Math.round(weatherData.daily.temperature_2m_min[idx])}°
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </>
-        )}
+            {/* 24-Hour Forecast Curve & Hourly Strip */}
+            <ForecastChart
+              data={next24Hours}
+              activeTab={activeChartTab}
+              setActiveTab={setActiveChartTab}
+              tempUnit={tempUnit}
+            />
+
+            {/* Atmospheric Sensor Telemetry (6 Cards) */}
+            <DetailedMetrics
+              current={current}
+              daily={daily}
+              uvInfo={uvInfo}
+              tempUnit={tempUnit}
+              formatTemp={formatTemp}
+            />
+
+            {/* 7-Day Extended Weekly Outlook */}
+            <DailyForecast
+              daily={daily}
+              tempUnit={tempUnit}
+              formatTemp={formatTemp}
+            />
+          </div>
+        ) : null}
+
+        {/* Footer */}
+        <Footer />
       </div>
     </div>
   );
