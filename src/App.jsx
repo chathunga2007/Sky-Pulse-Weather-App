@@ -277,7 +277,13 @@ export default function App() {
   const sunsetFormatted = daily?.sunset?.[0] ? formatTimeStr(daily.sunset[0]) : "6:15 PM";
 
   return (
-    <div className="min-h-screen bg-[#030508] text-slate-100 flex flex-col relative overflow-x-hidden transition-colors duration-500">
+    <div
+      className={`min-h-screen flex flex-col relative overflow-x-hidden transition-colors duration-500 ${
+        darkMode
+          ? "bg-[#030508] text-slate-100"
+          : "bg-gradient-to-br from-sky-50 via-slate-50 to-blue-100 text-slate-900"
+      }`}
+    >
       {/* Dynamic Animated Ambient Orbs */}
       <div
         className="fixed -top-36 -left-36 w-[550px] h-[550px] rounded-full blur-[140px] pointer-events-none transition-colors duration-1000 orb-a"
