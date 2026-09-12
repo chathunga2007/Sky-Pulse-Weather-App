@@ -65,12 +65,8 @@ export default function HeroCard({
         </div>
 
         <div className="flex flex-col items-end gap-1.5">
-          <div
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 shadow-sm ${
-              meta.badgeBg || "bg-cyan-500/20 text-cyan-300 border-cyan-500/30"
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+          <div className="px-3.5 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md flex items-center gap-1.5 shadow-sm dark:bg-cyan-500/20 dark:text-cyan-300 dark:border-cyan-500/30 bg-cyan-100 text-cyan-900 border-cyan-300">
+            <Sparkles className="w-3.5 h-3.5 animate-pulse text-cyan-600 dark:text-cyan-400" />
             <span>{current.is_day ? "Daytime" : "Nighttime"}</span>
             <span>•</span>
             <span>{meta.label}</span>
@@ -97,14 +93,14 @@ export default function HeroCard({
             </span>
           </div>
 
-          {/* Dual Language Condition description */}
+          {/* Condition description */}
           <div className="flex flex-wrap items-center gap-2 mt-2">
             <span className="text-xl sm:text-2xl font-extrabold text-slate-100 tracking-tight">
               {meta.label}
             </span>
-            {meta.sinhalaLabel && (
-              <span className="text-sm font-semibold text-cyan-300/80 px-2 py-0.5 rounded-md bg-cyan-950/40 border border-cyan-800/40">
-                {meta.sinhalaLabel}
+            {meta.subLabel && (
+              <span className="text-xs font-bold px-2.5 py-0.5 rounded-md dark:bg-cyan-950/50 dark:text-cyan-300 dark:border-cyan-800/50 bg-cyan-100 text-cyan-800 border border-cyan-300">
+                {meta.subLabel}
               </span>
             )}
           </div>
@@ -149,40 +145,40 @@ export default function HeroCard({
       {/* Bottom Timeline: Sunrise, Daylight Cycle, and Sunset */}
       <div className="pt-5 border-t border-slate-800/80 z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3 w-full sm:w-auto">
-          <div className="p-2.5 rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/20 icon-glow-amber">
+          <div className="p-2.5 rounded-2xl bg-amber-500/15 text-amber-500 border border-amber-500/30 icon-glow-amber">
             <Sunrise className="w-4 h-4" />
           </div>
           <div>
-            <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+            <div className="text-[10px] uppercase font-extrabold text-slate-500 dark:text-slate-400 tracking-wider">
               Sunrise
             </div>
-            <div className="text-sm font-bold text-slate-100">{sunrise}</div>
+            <div className="text-sm font-extrabold text-slate-900 dark:text-slate-100">{sunrise}</div>
           </div>
         </div>
 
         {/* Daylight Arc Meter */}
         <div className="w-full sm:w-56 flex flex-col items-center gap-1.5">
-          <div className="w-full h-2 bg-slate-900/80 border border-slate-800 rounded-full overflow-hidden relative">
+          <div className="w-full h-2.5 bg-slate-200 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-800 rounded-full overflow-hidden relative">
             <div
-              className="h-full bg-gradient-to-r from-amber-400 via-cyan-400 to-indigo-500 rounded-full transition-all duration-1000"
+              className="h-full bg-gradient-to-r from-amber-400 via-cyan-500 to-indigo-500 rounded-full transition-all duration-1000"
               style={{
                 width: current.is_day ? "68%" : "18%",
               }}
             />
           </div>
-          <span className="text-[10px] text-slate-400 font-semibold tracking-wide">
+          <span className="text-[10px] text-slate-600 dark:text-slate-400 font-bold tracking-wide">
             {current.is_day ? "Daylight active cycle" : "Nighttime active cycle"}
           </span>
         </div>
 
         <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
           <div className="text-right">
-            <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+            <div className="text-[10px] uppercase font-extrabold text-slate-500 dark:text-slate-400 tracking-wider">
               Sunset
             </div>
-            <div className="text-sm font-bold text-slate-100">{sunset}</div>
+            <div className="text-sm font-extrabold text-slate-900 dark:text-slate-100">{sunset}</div>
           </div>
-          <div className="p-2.5 rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 icon-glow-violet">
+          <div className="p-2.5 rounded-2xl bg-indigo-500/15 text-indigo-500 border border-indigo-500/30 icon-glow-violet">
             <Sunset className="w-4 h-4" />
           </div>
         </div>
