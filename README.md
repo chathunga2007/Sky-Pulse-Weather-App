@@ -1,95 +1,160 @@
 <div align="center">
 
-# ⚡ SkyPulse — Atmospheric Telemetry & Forecast
+<img src="./public/app_logo.png" alt="SkyPulse Logo" width="120" height="120" style="border-radius: 28px; box-shadow: 0 10px 30px rgba(6, 182, 212, 0.35);" />
 
-**Next-generation meteorological dashboard and hyper-local atmospheric radar engineered with cutting-edge Glassmorphism aesthetics.**
+# ⚡ SkyPulse — Next-Gen Atmospheric Intelligence & Radar
+
+**The most advanced, hyper-immersive meteorological platform and Doppler radar simulator, engineered with Glassmorphism 2.0 aesthetics and zero-latency telemetry.**
 
 [![React 19](https://img.shields.io/badge/React-19.2.8-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Vite 8](https://img.shields.io/badge/Vite-8.3.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4.3.3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Recharts](https://img.shields.io/badge/Recharts-3.10.1-22c55e?style=for-the-badge)](https://recharts.org/)
+[![Web Audio API](https://img.shields.io/badge/Audio-Procedural_Web_Audio-A855F7?style=for-the-badge&logo=soundcharts&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
+[![HTML5 Canvas](https://img.shields.io/badge/Canvas-Live_Particles-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
 [![Open-Meteo](https://img.shields.io/badge/API-Open--Meteo-FF6F00?style=for-the-badge)](https://open-meteo.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-38BDF8.svg?style=for-the-badge)](LICENSE)
 
-[Explore Features](#-key-features) • [Tech Stack](#-technology-stack) • [Quick Start](#-quick-start) • [Project Architecture](#-project-structure) • [Author](#-author--credits)
+[🌟 Live Features](#-flagship-features) • [📡 Radar Simulator](#-atmospheric-radar--particle-streamline-simulator) • [⚡ Lightning Telemetry](#-lightning-strike--severe-thunderstorm-threat-center) • [🤖 AI Meteorologist](#-skypulse-ai-meteorologist--life-advisor) • [🎧 Soundscape Synthesizer](#-procedural-ambient-soundscape-engine) • [🚀 Quick Start](#-quick-start) • [👨‍💻 Author](#-author--credits)
 
 </div>
 
 ---
 
-## 🌟 Overview
+## 🌌 Overview
 
-**SkyPulse** is a high-performance, precision atmospheric weather dashboard designed to provide real-time meteorological intelligence. Built with **React 19**, **Tailwind CSS v4**, and **Vite**, SkyPulse combines high-fidelity glassmorphism visual design with live radar feeds, 24-hour predictive trend graphs, air quality indexing, and extended 7-day forecasts.
+**SkyPulse** redefines the modern weather application. Beyond standard temperature figures, SkyPulse operates as a comprehensive **meteorological intelligence terminal** designed for precision, beauty, and situational awareness.
 
-Whether navigating daylight clarity or sleek midnight dark mode, SkyPulse delivers fluid responsiveness and zero-latency weather insights across all screen form factors.
+From monitoring **atmospheric convective energy (CAPE)** to tracking **15-minute precipitation pulses**, calculating **lightning strike proximity** in real-time, synthesizing **ambient procedural soundscapes**, and running a **live canvas Doppler radar simulator**, SkyPulse delivers an unprecedented weather monitoring experience.
+
+Built on **React 19**, **Tailwind CSS v4**, and **Vite**, SkyPulse features an adaptive **Dual Glassmorphism Engine** that effortlessly adapts between an airy, aero-marine **Daylight Mode** and an obsidian, luminescent **Midnight Dark Mode**.
 
 ---
 
-## ✨ Key Features
+## ⚡ Flagship Features
 
-### 🌐 Global Geo-Spatial Search & Fast Autocomplete
-- Search any city, capital, or region worldwide with debounced real-time geocoding suggestions.
-- Instant country code badges and administrative division tagging.
-- Quick-access hotspot pills for rapid navigation between major global metropolitan hubs.
+```
+┌───────────────────────────────────────────────────────────────────────────┐
+│                           SKY-PULSE PLATFORM                              │
+├───────────────────┬───────────────────┬───────────────────┬───────────────┤
+│  ⚡ LIGHTNING CTR  │  🌊 VOLATILITY    │  🛰️ LIVE RADAR    │  🤖 AI ENGINE │
+│  CAPE Energy Index│  15m Rain Pulse   │  Doppler Echo     │  6-Domain Life│
+│  Flash-to-Bang    │  Barometric Trend │  Wind Streamlines │  Activity     │
+│  30/30 Safety Rule│  Shift Probability│  Thermal Heatmap  │  Readiness    │
+└───────────────────┴───────────────────┴───────────────────┴───────────────┘
+```
 
-### 📍 GPS Hardware Location Detection
-- One-click geolocation API integration automatically resolves your exact geographic coordinates and streams local weather conditions.
+---
 
-### 📊 24-Hour Predictive Telemetry Chart
-- Interactive area chart powered by **Recharts** with smooth gradient fills and responsive custom tooltips.
-- One-touch toggle across three vital data streams:
-  - **Temperature Trends (°C / °F)**
-  - **Precipitation Probability (%)**
-  - **Wind Speed (km/h)**
-- Horizontal scrollable hourly snapshot strip with condition badges.
+### 1. ⚡ Lightning Strike & Severe Thunderstorm Threat Center
+*Hyper-local convective instability telemetry and real-time electrical storm hazard monitoring.*
 
-### 🍃 Real-Time Air Quality & EPA AQI Monitoring
-- Live US EPA Air Quality Index (AQI) tracking with intuitive color-coded risk bands (Good, Moderate, Unhealthy, Hazardous).
-- Detailed concentration metrics for particulate matter: **PM2.5** and **PM10** ($\mu\text{g/m}^3$).
-- Actionable health recommendations and atmospheric advisories.
+- **Atmospheric CAPE Index**: Tracks **Convective Available Potential Energy** (measured in J/kg) directly from high-resolution telemetry:
+  - `0 - 300 J/kg`: Stable atmosphere / minimal lightning potential
+  - `300 - 1,000 J/kg`: Moderate convective activity / isolated thunder
+  - `1,000 - 2,500 J/kg`: Elevated risk / frequent cloud-to-ground strikes
+  - `> 2,500 J/kg`: Extreme danger / severe thunderstorm & microburst potential
+- **Interactive "Flash-to-Bang" Proximity Stopwatch**: Tap when seeing lightning and tap again on thunder; SkyPulse instantly calculates the strike distance in **kilometers** and **miles** using the speed of sound ($343\text{ m/s}$) and alerts if you are inside the **10km Danger Zone**.
+- **The 30/30 Lightning Safety Protocol**: Integrated safety checklist recommending prompt indoor shelter and electronics disconnection.
+- **12-Hour CAPE Trajectory Sparkline**: Hourly convective energy forecast allowing users to anticipate evening or afternoon electrical storms.
 
-### 📡 Atmospheric Radar & Comprehensive Telemetry (6 Sensor Feeds)
-- **Relative Humidity & Dew Point**: Precise moisture measurement.
-- **Wind Vector & Gusts**: Velocity and peak wind gust tracking.
-- **UV Solar Radiation Index**: Real-time UV rating with safety advisories (sun lotion, shade alerts).
-- **Visibility**: Horizon clarity measured in kilometers.
-- **Surface Pressure**: High/low barometric pressure trends in hPa.
-- **Thermal Index**: Apparent "Feels Like" temperature and perceived comfort index.
+---
 
-### 📅 7-Day Extended Meteorological Outlook
-- Daily weather conditions with high-resolution condition iconography.
-- Dynamic high/low temperature ranges and precipitation likelihood.
-- Fully responsive card grid optimizing from mobile pairs to desktop weekly panoramas.
+### 2. 🌊 Rapid Weather Change & Volatility Radar
+*Predict sudden squalls, rapid pressure drops, and precipitation onset before they happen.*
 
-### 🌓 Dual Ultra-Glassmorphism Engine (Light & Dark)
-- Built on a customized Tailwind v4 variant system (`@custom-variant dark`) for pixel-perfect class-based switching.
-- **Light Mode**: High-contrast slate typography (`#0f172a`), frosted pearl glass panels, and deep cyan accenting.
-- **Dark Mode**: Deep space nebula aesthetics, neon cyan/emerald glow borders, and translucent obsidian glass.
+- **Sudden Change Probability Index (0–100%)**: Multi-variable algorithm calculating the precise probability of sudden weather shifts in the next 1–2 hours.
+- **15-Minute Next Precipitation Pulse**: High-resolution 4-hour timeline displaying rain accumulation in 15-minute intervals, letting users know exactly when rain starts or stops.
+- **3-Hour Barometric Delta ($\Delta P$) Tendency**: Detects rapidly falling barometers (indicating approaching squall lines or tropical fronts) vs rising barometers (clearing skies).
+- **Gust Differential Telemetry**: Compares steady wind speed against peak gusts to alert for sudden shear winds.
 
-### ⚡ Zero API Key Friction
-- Directly connects to the **Open-Meteo** API network — high precision, global coverage, no hidden keys, and zero rate-limit friction.
+---
+
+### 3. 🛰️ Atmospheric Radar & Vector Streamline Simulator
+*A canvas-rendered interactive Doppler radar terminal with full multi-layer switching.*
+
+- **Precipitation Reflectivity Mode (dBZ)**: Animated rotating radar beam sweeping across regional echo cells with official Doppler reflectivity scales:
+  - `15 dBZ` (Light Rain) • `35 dBZ` (Moderate Rain) • `50 dBZ` (Heavy Downpour) • `65+ dBZ` (Severe Thunderstorm / Hail)
+- **Wind Particle Vector Flow**: Fluid particle streamlines dynamically flowing with current wind speed and directional headings.
+- **Thermal Heatmap Layer**: Isothermal regional temperature gradient overlay.
+- **Full Theme Adaptation**:
+  - **Dark Mode**: High-contrast deep space navy terminal (`#040813`) with neon cyan grid rings and luminous radar sweep.
+  - **Light Mode**: Aeronautical light aero-marine sky theme (`#f1f6fc`) with high-contrast ocean-blue grid rings and vivid echo blobs.
+- **Interactive Radial Controls**: Switch sweep radius between `50km`, `100km`, and `250km` with play/pause animations.
+
+---
+
+### 4. 🤖 SkyPulse AI Meteorologist & Life Advisor
+*Context-aware atmospheric diagnostic engine paired with a 6-domain outdoor life matrix.*
+
+- **Executive Diagnostic Briefing**: Plain-language synthesis analyzing temperature, perceived comfort, lightning threat, air quality, humidity, and barometric trends.
+- **6-Domain Outdoor Life & Activity Readiness Matrix**:
+  | Activity Domain | Metric Evaluated | Diagnostic Output |
+  | :--- | :--- | :--- |
+  | ⚡ **Outdoor Sports** | CAPE & Lightning Strike Hazard | Safe vs Severe Lightning Hazard (Suspension alert) |
+  | 🚗 **Driving & Commuting** | Precipitation & Road Wetness | Clear Roads vs Severe Hydroplaning Risk |
+  | 🧺 **Laundry Drying** | Solar Radiation & Evaporation | Rapid Drying (<2h) vs Damp Delay |
+  | 🏃 **Running & Workout** | Thermal Index & US EPA AQI | Optimal Window vs Heat/Pollution Stress |
+  | 🛸 **Drone & UAV Flight** | Wind Gusts & Convective Turbulence| Stable Envelope vs Grounded / Extreme Shear |
+  | 🔭 **Astronomy & Stargazing**| Cloud Opacity & Atmospheric Clarity | Crystal Night Skies vs Heavy Cloud Obscurity |
+
+---
+
+### 5. 🎧 Procedural Ambient Weather Soundscape Engine
+*Zero-asset, zero-latency generative atmospheric audio synthesized via the browser's native Web Audio API.*
+
+- **100% Procedural Synthesis**: Requires **zero external MP3 files**; all audio is synthesized mathematically in real-time.
+- **Weather-Responsive Moods**:
+  - **Rain Mood**: Filtered brown/pink noise patter simulating continuous rainfall.
+  - **Thunderstorm Mood**: Deep resonant oscillator bursts and decaying crackle bursts simulating distant thunder.
+  - **Wind Mood**: LFO-modulated bandpass noise sweeping with wind gusts.
+  - **Sunny / Night Mood**: Soft ambient breezes with organic birdsong or nocturnal crickets.
+- **Precision Volume Control**: Interactive popover featuring step buttons (**`-`** / **`+`**), quick presets (**25%**, **50%**, **75%**, **100%**), and animated equalizer bars.
+
+---
+
+### 6. 🌧️ Real-Time Live Weather Canvas (Falling Rain & Lightning Bolts)
+*Dynamic full-viewport particle system overlaying live conditions onto your screen.*
+
+- **Falling Rain Particles**: Hundreds of raindrops falling at wind-calibrated angles with ground splash ripples.
+- **Live Lightning Flashes**: Periodic sky flashes paired with procedural branching electric bolts cutting through the atmosphere.
+- **Theme-Adaptive Contrast**:
+  - Crisp slate-cyan droplets with high-contrast electric blue lightning in **Light Mode**.
+  - Luminous crystal-blue droplets with brilliant white/cyan branching lightning in **Dark Mode**.
+- **Live FX Header Toggle**: One-click button in the navigation bar to enable or disable background particles.
+
+---
+
+### 7. 📱 Ultra-Responsive Mobile Dock & Layout
+*Designed for pixel-perfect usability from 320px mobile screens to 4K desktop displays.*
+
+- **Floating Glass Mobile Dock (`MobileNav.jsx`)**: Docked at the bottom of mobile viewports with one-tap smooth scrolling across:
+  - `Overview` • `Lightning` • `Volatility` • `Radar` • `AI Advisor`
+- **Safe-Area Clearance (`pb-32`)**: Ample bottom breathing room ensuring the footer and developer attribution are never obscured.
+- **Horizontal Scroll Snap**: Touch-optimized swipeable city chips and 24-hour hourly forecast cards.
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Layer | Technology | Description |
+| Technology | Version | Purpose |
 | :--- | :--- | :--- |
-| **Frontend Framework** | **React 19.2** | Concurrent mode, reactive component state, and modern hooks |
-| **Build Tool** | **Vite 8.3** | Lightning-fast Hot Module Replacement (HMR) and optimized rollup bundle |
-| **Styling & Theme** | **Tailwind CSS v4** | Pure utility-first design, custom glass tokens, dynamic backdrop filters |
-| **Data Visualization** | **Recharts 3.10** | Responsive SVG charts with custom gradients, tooltips, and transitions |
-| **Iconography** | **Lucide React** | Clean, lightweight, and modern vector icon suite |
-| **HTTP Client** | **Axios** | Robust API requests with error interception and timeout handling |
-| **Meteorological Data**| **Open-Meteo API** | Free, open-source global weather, forecast, and air quality telemetry |
+| **React** | `^19.2.8` | Next-generation UI rendering, concurrent features, and state hooks |
+| **Vite** | `^8.3.0` | Ultra-fast build tool, instant HMR, and optimized production bundling |
+| **Tailwind CSS** | `^4.3.3` | Modern utility styling with `@custom-variant dark` and custom glass tokens |
+| **Recharts** | `^3.10.1` | Responsive SVG charts with custom gradient fills and tooltips |
+| **Web Audio API** | Native | Procedural weather sound synthesis (rain, thunder, wind, nature) |
+| **HTML5 Canvas** | Native | High-frequency Doppler radar scanner & live particle rain/lightning FX |
+| **Lucide React** | `^1.45.0` | Clean, modern vector iconography |
+| **Axios** | `^1.20.0` | Robust asynchronous HTTP networking |
+| **Open-Meteo API** | v1 | Open-source global forecast, hourly CAPE, minutely-15, and AQI telemetry |
 
 ---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/) (version `18.x` or higher recommended)
-- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) / [pnpm](https://pnpm.io/)
+- [Node.js](https://nodejs.org/) (`v18.x` or higher recommended)
+- [npm](https://www.npmjs.com/) / [yarn](https://yarnpkg.com/) / [pnpm](https://pnpm.io/)
 
 ### 1. Clone the Repository
 ```bash
@@ -106,13 +171,13 @@ npm install
 ```bash
 npm run dev
 ```
-Open your browser and navigate to `http://localhost:5173`.
+Navigate to `http://localhost:5173` in your browser.
 
 ### 4. Build for Production
 ```bash
 npm run build
 ```
-The production bundle will be generated in the `dist/` directory.
+Generates an optimized, minified bundle in the `dist/` directory.
 
 ### 5. Preview Production Build
 ```bash
@@ -121,60 +186,70 @@ npm run preview
 
 ---
 
-## 📁 Project Structure
+## 📁 Project Directory Structure
 
 ```text
 sky-pulse/
 ├── public/
-│   ├── favicon.ico          # Application favicon
-│   └── weather-icon.png     # Brand logo asset
+│   ├── app_logo.png               # Official SkyPulse brand logo
+│   └── favicon.ico                # Application favicon
 ├── src/
 │   ├── components/
-│   │   ├── AirQualityPanel.jsx   # US EPA AQI gauge & PM2.5/PM10 metrics
-│   │   ├── CityChips.jsx         # Hotspot quick-select city pills
-│   │   ├── DailyForecast.jsx     # 7-day forecast cards with responsive grid
-│   │   ├── DetailedMetrics.jsx   # 6 live atmospheric radar sensor cards
-│   │   ├── Footer.jsx            # Sleek developer attribution & brand links
-│   │   ├── ForecastChart.jsx     # 24-hour Recharts predictive telemetry graph
-│   │   ├── Header.jsx            # Unified glass header with Live Radar & controls
-│   │   ├── HeroCard.jsx          # Current weather overview & solar cycle bar
-│   │   └── SearchBar.jsx         # Debounced geocoding search & autocomplete
+│   │   ├── AiMeteorologistPanel.jsx   # AI atmospheric brief & 6-domain activity matrix
+│   │   ├── AirQualityPanel.jsx        # US EPA AQI gauge & PM2.5/PM10 metrics
+│   │   ├── AmbientSoundscape.jsx      # Web Audio controller with volume stepper & presets
+│   │   ├── CityChips.jsx              # Quick-access global hotspot city pills
+│   │   ├── DailyForecast.jsx          # 7-day extended forecast with daily temperature spans
+│   │   ├── DetailedMetrics.jsx        # 6 sensor cards (humidity, dew point, wind, UV, pressure)
+│   │   ├── Footer.jsx                 # Glassmorphic developer attribution & copyright
+│   │   ├── ForecastChart.jsx          # 24-hour predictive telemetry curve (temp, rain, wind)
+│   │   ├── Header.jsx                 # Redesigned glass navigation bar with audio & FX toggles
+│   │   ├── HeroCard.jsx               # Current weather overview, feels-like, & solar cycle arc
+│   │   ├── LightningThreatPanel.jsx   # Akunu Sara / CAPE index & Flash-to-Bang distance tool
+│   │   ├── LiveWeatherCanvas.jsx      # Live canvas falling rain particles & lightning strikes
+│   │   ├── MobileNav.jsx              # Floating mobile bottom navigation dock
+│   │   ├── RadarMapPanel.jsx          # Interactive Doppler radar simulator (dBZ, wind, thermal)
+│   │   ├── SearchBar.jsx              # Debounced global geocoding search & autocomplete
+│   │   └── WeatherVolatilityPanel.jsx # Sudden shift probability barometer & 15-min rain pulse
+│   ├── services/
+│   │   └── weatherApi.js              # Open-Meteo forecast, CAPE, minutely-15 & AQI client
 │   ├── utils/
-│   │   ├── weatherCodes.js       # WMO weather code dictionary & metadata
-│   │   └── weatherIcons.jsx      # Weather condition dynamic vector mapping
-│   ├── App.jsx                   # Master dashboard orchestration & data fetching
-│   ├── index.css                 # Tailwind v4 theme setup & glassmorphism tokens
-│   └── main.jsx                  # Application entry point
-├── package.json                  # Dependencies and project scripts
-├── vite.config.js                # Vite build configuration
-└── README.md                     # Project documentation
+│   │   ├── weatherCodes.js            # WMO meteorological code mappings & visual metadata
+│   │   └── weatherSynth.js            # Procedural Web Audio API sound synthesis engine
+│   ├── App.jsx                        # Master dashboard state orchestration & telemetry loader
+│   ├── index.css                      # Tailwind v4 theme, glass tokens, & custom keyframes
+│   └── main.jsx                       # Application entry point
+├── package.json                       # Project configuration & scripts
+├── tailwind.config.js                 # Tailwind design system extensions
+├── vite.config.js                     # Vite build & bundler configuration
+└── README.md                          # Platform documentation
 ```
 
 ---
 
-## 🎨 Design Philosophy
+## 🎨 Design System & Aesthetics
 
-SkyPulse is crafted with the **Glassmorphism 2.0** paradigm:
-- **Multi-layered Translucency**: Distinct background blur levels (`backdrop-blur-xl`, `backdrop-blur-2xl`) create spatial hierarchy.
-- **Luminescent Accent Lights**: Ambient colored radial gradients simulate volumetric light behind weather modules.
-- **Ergonomic Typography**: High-contrast type weights (Slate 900 in Light mode, White in Dark mode) ensure readability in any environment.
-- **Adaptive Layout**: Responsive grids automatically re-orient layouts from single-column mobile displays to full multi-column dashboard monitors.
+SkyPulse is built upon the **Glassmorphism 2.0** design philosophy:
+- **Spatial Translucency**: Multi-layered backdrop blurs (`backdrop-blur-xl`, `backdrop-blur-3xl`) establish intuitive optical depth.
+- **Volumetric Ambient Lighting**: Dynamic animated ambient orbs float in the background, morphing color based on current weather conditions (golden sun, electric cyan, storm indigo).
+- **High-Contrast Micro-Interactions**: Hover elevation, glowing borders, active state scales, and pulsing indicators provide immediate tactile feedback.
+- **Theme Invariance**: Both Light Mode and Dark Mode are treated as first-class citizens, featuring tailored contrast ratios, distinct radar palettes, and custom canvas blend modes.
 
 ---
 
 ## 👨‍💻 Author & Credits
 
-- **Developer**: **Chathunga Bimsara**
+- **Lead Developer**: **Chathunga Bimsara**
 - **GitHub**: [@chathunga2007](https://github.com/chathunga2007)
 - **Repository**: [Sky-Pulse-Weather-App](https://github.com/chathunga2007/Sky-Pulse-Weather-App)
-- **Weather Data**: Powered by [Open-Meteo](https://open-meteo.com/)
+- **Telemetry Feeds**: Powered by [Open-Meteo](https://open-meteo.com/) (Open-source Global Weather & Air Quality Models)
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** — feel free to inspect, fork, and enhance for personal or educational use.
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
 <div align="center">
-  <sub>Developed with ⚡ and precision by Chathunga Bimsara</sub>
+  <sub>Engineered with ⚡ precision, mathematical audio synthesis, and modern web design by <strong>Chathunga Bimsara</strong>.</sub>
 </div>
