@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AlertCircle, Cloud } from "lucide-react";
+import { AlertCircle, Cloud, Zap, Radio, ShieldAlert } from "lucide-react";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import CityChips from "./components/CityChips";
@@ -8,6 +8,13 @@ import AirQualityPanel from "./components/AirQualityPanel";
 import ForecastChart from "./components/ForecastChart";
 import DetailedMetrics from "./components/DetailedMetrics";
 import DailyForecast from "./components/DailyForecast";
+import LightningThreatPanel from "./components/LightningThreatPanel";
+import WeatherVolatilityPanel from "./components/WeatherVolatilityPanel";
+import AiMeteorologistPanel from "./components/AiMeteorologistPanel";
+import RadarMapPanel from "./components/RadarMapPanel";
+import AmbientSoundscape from "./components/AmbientSoundscape";
+import LiveWeatherCanvas from "./components/LiveWeatherCanvas";
+import MobileNav from "./components/MobileNav";
 import Footer from "./components/Footer";
 import {
   fetchComprehensiveWeather,
@@ -62,6 +69,9 @@ export default function App() {
   const [tempUnit, setTempUnit] = useState("C");
   const [activeChartTab, setActiveChartTab] = useState("temp");
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [activeSection, setActiveSection] = useState("overview");
+  const [dismissSevereAlert, setDismissSevereAlert] = useState(false);
+  const [fxEnabled, setFxEnabled] = useState(true);
   const [darkMode, setDarkMode] = useState(() => {
     try {
       const saved = localStorage.getItem("skyPulseDarkMode");
@@ -70,6 +80,15 @@ export default function App() {
       return true;
     }
   });
+
+  // Mobile navigation scroll handler
+  const handleSelectMobileSection = (sectionId) => {
+    setActiveSection(sectionId);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   // Clock Ticker
   useEffect(() => {
@@ -295,8 +314,18 @@ export default function App() {
       />
       <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-cyan-900/10 rounded-full blur-[180px] pointer-events-none orb-c" />
 
+      {/* Real-time Atmospheric Live Particle FX (Falling Rain, Lightning Bolts, Sun Bokeh) */}
+      <LiveWeatherCanvas
+        weatherCode={current?.weather_code ?? 0}
+        cape={current?.cape ?? 0}
+        isDay={current?.is_day === 1}
+        windSpeed={current?.wind_speed_10m ?? 10}
+        enabled={fxEnabled}
+        darkMode={darkMode}
+      />
+
       {/* Main Content Container */}
-      <div className="w-full max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-8 z-10 space-y-4 sm:space-y-6">
+      <div className="w-full max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-8 pb-32 sm:pb-36 lg:pb-10 z-10 space-y-4 sm:space-y-6">
         {/* Unified Top Glass Header with Integrated Controls */}
         <Header
           currentTime={currentTime}
@@ -309,6 +338,15 @@ export default function App() {
           refreshing={refreshing}
           loading={loading}
           handleRefresh={handleRefresh}
+          fxEnabled={fxEnabled}
+          setFxEnabled={setFxEnabled}
+          audioComponent={
+            <AmbientSoundscape
+              weatherCode={current?.weather_code}
+              isDay={current?.is_day === 1}
+              cape={current?.cape}
+            />
+          }
           searchComponent={
             <SearchBar
               query={query}
@@ -333,6 +371,40 @@ export default function App() {
             loadWeatherData(city.lat, city.lon, city.name, city.country)
           }
         />
+
+        {/* Real-time Severe Thunderstorm & Lightning Alert Banner */}
+        {current &&
+          !dismissSevereAlert &&
+          ((current.weather_code >= 95 && current.weather_code <= 99) ||
+            (current.cape ?? 0) >= 1200 ||
+            (current.wind_gusts_10m ?? 0) >= 48) && (
+            <div className="glass-panel p-4 sm:p-5 rounded-3xl bg-amber-500/15 border-2 border-amber-500/50 text-amber-950 dark:text-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fade-in shadow-xl relative overflow-hidden">
+              <div className="flex items-center gap-3.5">
+                <div className="p-2.5 rounded-2xl bg-amber-500/20 text-amber-500 border border-amber-500/30 animate-pulse shrink-0">
+                  <Zap className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2 font-black text-sm text-slate-900 dark:text-amber-300">
+                    <span>SEVERE CONVECTIVE & LIGHTNING ADVISORY</span>
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-500/20 uppercase tracking-wider font-black">
+                      Severe Lightning Warning
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-700 dark:text-slate-300 font-semibold mt-0.5">
+                    Convective Energy (CAPE) elevated at {current?.cape ?? 0} J/kg with peak gusts{" "}
+                    {Math.round(current?.wind_gusts_10m ?? 0)} km/h. Avoid open grounds and apply 30/30 rule.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setDismissSevereAlert(true)}
+                className="self-end sm:self-center text-xs px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 font-black cursor-pointer transition text-amber-950 dark:text-amber-200 shrink-0"
+              >
+                Dismiss
+              </button>
+            </div>
+          )}
 
         {/* Error Alert */}
         {error && (
@@ -372,7 +444,7 @@ export default function App() {
         ) : weatherData && current ? (
           <div className="space-y-6">
             {/* Primary Hero Row: Weather Display + Air Quality Panel */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div id="overview" className="grid grid-cols-1 lg:grid-cols-3 gap-6 scroll-mt-24">
               <HeroCard
                 current={current}
                 daily={daily}
@@ -389,6 +461,25 @@ export default function App() {
                 aqiInfo={aqiInfo}
                 current={current}
                 uvInfo={uvInfo}
+              />
+            </div>
+
+            {/* 1. Flagship: Lightning Strike & Severe Thunderstorm Threat Center (Akunu Sara) */}
+            <div id="lightning" className="scroll-mt-24">
+              <LightningThreatPanel
+                current={current}
+                hourly={hourly}
+                currentCity={currentCity}
+              />
+            </div>
+
+            {/* 2. Flagship: Rapid Weather Change & Volatility Radar (Wens Wenn Ida Kada) */}
+            <div id="volatility" className="scroll-mt-24">
+              <WeatherVolatilityPanel
+                current={current}
+                hourly={hourly}
+                minutely15={weatherData?.minutely_15}
+                tempUnit={tempUnit}
               />
             </div>
 
@@ -409,6 +500,27 @@ export default function App() {
               formatTemp={formatTemp}
             />
 
+            {/* 3. Flagship: Atmospheric Radar & Vector Streamline Simulator */}
+            <div id="radar" className="scroll-mt-24">
+              <RadarMapPanel
+                current={current}
+                currentCity={currentCity}
+                darkMode={darkMode}
+              />
+            </div>
+
+            {/* 4. Flagship: SkyPulse AI Meteorologist & Life Activities Index (EN/SI Dual Language) */}
+            <div id="ai" className="scroll-mt-24">
+              <AiMeteorologistPanel
+                current={current}
+                daily={daily}
+                airQuality={airQuality}
+                currentCity={currentCity}
+                tempUnit={tempUnit}
+                formatTemp={formatTemp}
+              />
+            </div>
+
             {/* 7-Day Extended Weekly Outlook */}
             <DailyForecast
               daily={daily}
@@ -420,6 +532,12 @@ export default function App() {
 
         {/* Footer */}
         <Footer />
+
+        {/* Mobile Sticky Floating Navigation Dock */}
+        <MobileNav
+          activeSection={activeSection}
+          onSelectSection={handleSelectMobileSection}
+        />
       </div>
     </div>
   );
