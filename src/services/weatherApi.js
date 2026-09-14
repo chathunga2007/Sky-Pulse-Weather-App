@@ -46,6 +46,8 @@ export const fetchComprehensiveWeather = async (lat, lon) => {
       "wind_speed_10m",
       "wind_direction_10m",
       "wind_gusts_10m",
+      "cape",
+      "lightning_potential",
     ].join(","),
     hourly: [
       "temperature_2m",
@@ -57,8 +59,17 @@ export const fetchComprehensiveWeather = async (lat, lon) => {
       "surface_pressure",
       "visibility",
       "wind_speed_10m",
+      "wind_gusts_10m",
       "uv_index",
+      "cape",
+      "lightning_potential",
     ].join(","),
+    minutely_15: [
+      "precipitation",
+      "weather_code",
+      "lightning_potential",
+    ].join(","),
+    forecast_minutely_15: "24",
     daily: [
       "weather_code",
       "temperature_2m_max",
