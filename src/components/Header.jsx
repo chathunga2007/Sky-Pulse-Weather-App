@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigation, RefreshCw, Moon, Sun } from "lucide-react";
+import { Navigation, RefreshCw, Moon, Sun, Sparkles } from "lucide-react";
 
 export default function Header({
   currentTime,
@@ -13,20 +13,25 @@ export default function Header({
   loading,
   handleRefresh,
   searchComponent,
+  audioComponent,
+  fxEnabled,
+  setFxEnabled,
 }) {
   return (
-    <header className="glass-panel p-4 sm:p-5 rounded-3xl flex flex-col lg:flex-row items-center justify-between gap-4">
-      {/* Brand Logo & Status */}
-      <div className="flex items-center justify-between w-full lg:w-auto gap-4">
+    <header className="relative z-50 glass-panel p-3.5 sm:p-4 md:p-5 rounded-3xl flex flex-col lg:flex-row items-center justify-between gap-3.5 lg:gap-4 shadow-xl border border-white/15 dark:border-white/10">
+      {/* Brand Logo & Title */}
+      <div className="flex items-center justify-between w-full lg:w-auto gap-3 shrink-0">
         <div className="flex items-center gap-3">
-          <div className="relative">
-            <div className="absolute inset-0 bg-cyan-400/20 blur-lg rounded-2xl" />
+          {/* Logo container with fixed dimensions and no shrinking */}
+          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl shrink-0 overflow-hidden shadow-md border border-cyan-500/40 bg-white dark:bg-slate-950/80 p-1 flex items-center justify-center relative group">
+            <div className="absolute inset-0 bg-cyan-400/20 blur-md rounded-2xl opacity-0 group-hover:opacity-100 transition duration-500" />
             <img
-              className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl relative z-10 border border-slate-300 dark:border-white/10 shadow-lg object-contain bg-white dark:bg-slate-900/60 p-1"
+              className="w-full h-full object-contain relative z-10"
               src="./app_logo.png"
               alt="SkyPulse Logo"
             />
           </div>
+
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:bg-gradient-to-r dark:from-white dark:via-slate-100 dark:to-cyan-300 dark:bg-clip-text dark:text-transparent">
@@ -38,13 +43,13 @@ export default function Header({
               </span>
             </div>
             <p className="text-[11px] text-slate-600 dark:text-slate-400 font-semibold hidden sm:block">
-              Atmospheric Telemetry & Forecast
+              Atmospheric Telemetry & Severe Weather Intelligence
             </p>
           </div>
         </div>
 
-        {/* Mobile Clock */}
-        <div className="lg:hidden text-right text-xs text-slate-600 dark:text-slate-400 font-medium">
+        {/* Mobile Clock display */}
+        <div className="lg:hidden text-right text-xs text-slate-600 dark:text-slate-400 font-medium shrink-0">
           <div className="text-slate-900 dark:text-slate-200 font-black">
             {currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
           </div>
@@ -54,23 +59,47 @@ export default function Header({
         </div>
       </div>
 
-      {/* Center Search Container */}
-      <div className="w-full lg:max-w-md flex justify-center">
+      {/* Center Search Input Bar */}
+      <div className="w-full lg:flex-1 lg:max-w-md mx-auto">
         {searchComponent}
       </div>
 
-      {/* Right Action Tools & Controls */}
-      <div className="flex items-center gap-2.5 w-full lg:w-auto justify-between lg:justify-end">
-        {/* GPS Current Location */}
+      {/* Right Controls & Action Tools */}
+      <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-between lg:justify-end shrink-0">
+        {/* Ambient Soundscape */}
+        {audioComponent}
+
+        {/* Live Weather FX Particle Toggle */}
+        {setFxEnabled && (
+          <button
+            type="button"
+            onClick={() => setFxEnabled((p) => !p)}
+            title={fxEnabled ? "Disable Live Rain/Lightning Background FX" : "Enable Live Rain/Lightning Background FX"}
+            className={`glass-pill px-2.5 py-2 rounded-2xl text-xs font-bold flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all shadow-xs ${
+              fxEnabled
+                ? "text-cyan-600 dark:text-cyan-300 border-cyan-500/40 bg-cyan-500/10"
+                : "text-slate-600 dark:text-slate-400"
+            }`}
+          >
+            <Sparkles className={`w-3.5 h-3.5 ${fxEnabled ? "text-cyan-500 animate-spin-slow" : ""}`} />
+            <span className="hidden xl:inline">Live FX</span>
+          </button>
+        )}
+
+        {/* Current GPS Location */}
         <button
           type="button"
           onClick={handleCurrentLocation}
           disabled={locating}
-          title="Use my current GPS location"
-          className="glass-pill px-3.5 py-2 rounded-2xl text-xs font-bold text-slate-800 dark:text-cyan-300 flex items-center gap-1.5 hover:border-cyan-500 cursor-pointer active:scale-95 disabled:opacity-50 transition-all shadow-xs"
+          title="Use current GPS location"
+          className="glass-pill px-3 py-2 rounded-2xl text-xs font-bold text-slate-800 dark:text-cyan-300 flex items-center gap-1.5 hover:border-cyan-500 cursor-pointer active:scale-95 disabled:opacity-50 transition-all shadow-xs"
         >
-          <Navigation className={`w-3.5 h-3.5 ${locating ? "animate-spin text-cyan-600" : "text-cyan-600 dark:text-cyan-400"}`} />
-          <span className="hidden sm:inline">GPS Location</span>
+          <Navigation
+            className={`w-3.5 h-3.5 ${
+              locating ? "animate-spin text-cyan-600" : "text-cyan-600 dark:text-cyan-400"
+            }`}
+          />
+          <span className="hidden sm:inline">GPS</span>
         </button>
 
         {/* Temperature Unit Switcher */}
@@ -78,7 +107,7 @@ export default function Header({
           <button
             type="button"
             onClick={() => setTempUnit("C")}
-            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               tempUnit === "C"
                 ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/30"
                 : "text-slate-700 dark:text-slate-400 hover:text-slate-950 dark:hover:text-slate-200"
@@ -89,7 +118,7 @@ export default function Header({
           <button
             type="button"
             onClick={() => setTempUnit("F")}
-            className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               tempUnit === "F"
                 ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/30"
                 : "text-slate-700 dark:text-slate-400 hover:text-slate-950 dark:hover:text-slate-200"
@@ -99,7 +128,7 @@ export default function Header({
           </button>
         </div>
 
-        {/* Refresh button */}
+        {/* Refresh telemetry */}
         <button
           type="button"
           onClick={handleRefresh}
@@ -114,8 +143,8 @@ export default function Header({
         <button
           type="button"
           onClick={() => setDarkMode((prev) => !prev)}
-          title={darkMode ? "Switch to Daylight Mode" : "Switch to Dark Mode"}
-          className="glass-pill px-3 py-2 rounded-2xl flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all text-xs font-bold shadow-xs"
+          title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          className="glass-pill px-2.5 py-2 rounded-2xl flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all text-xs font-bold shadow-xs"
         >
           {darkMode ? (
             <>
