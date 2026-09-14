@@ -17,7 +17,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="glass-panel p-6 sm:p-8 rounded-3xl flex flex-col gap-6 text-xs text-slate-400 mt-10 transition-colors duration-500">
+    <footer className="glass-panel p-6 sm:p-8 rounded-3xl flex flex-col gap-6 text-xs text-slate-400 mt-10 mb-4 transition-colors duration-500">
       {/* Top row: Brand info & Status badges */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-5 border-b border-slate-700/40">
         <div className="flex items-center gap-3">
