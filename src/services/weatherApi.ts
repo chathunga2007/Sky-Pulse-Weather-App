@@ -16,10 +16,6 @@ import {
   sanitizeErrorMessage,
 } from "./apiSecurity";
 
-/**
- * Search cities with autocomplete support via Open-Meteo Geocoding API.
- * Protected with query sanitization, length bounds, and in-memory TTL caching.
- */
 export const searchCities = async (query: string): Promise<CityItem[]> => {
   const cleanQuery = sanitizeSearchQuery(query);
   if (!cleanQuery || cleanQuery.length < 2) return [];
@@ -63,10 +59,6 @@ export const searchCities = async (query: string): Promise<CityItem[]> => {
   }
 };
 
-/**
- * Fetch comprehensive weather forecast (current, hourly 24h, daily 7d)
- * Protected with coordinate boundary enforcement, caching, and rate limiting.
- */
 export const fetchComprehensiveWeather = async (
   lat: number,
   lon: number
@@ -160,10 +152,6 @@ export const fetchComprehensiveWeather = async (
   }
 };
 
-/**
- * Fetch Air Quality index and pollutant concentrations
- * Protected with coordinate validation, timeout and caching.
- */
 export const fetchAirQuality = async (
   lat: number,
   lon: number
@@ -192,10 +180,6 @@ export const fetchAirQuality = async (
   }
 };
 
-/**
- * Reverse geocode latitude & longitude to a human readable city name.
- * Strictly throttled to adhere to Nominatim's 1 req/sec policy with long-term caching.
- */
 export const reverseGeocode = async (lat: number, lon: number): Promise<string> => {
   const coordCheck = validateCoordinates(lat, lon);
   if (!coordCheck.valid) {
