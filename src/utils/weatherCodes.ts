@@ -1,9 +1,5 @@
 import type { WeatherMeta, AqiStatus, UvStatus, TempUnit } from "../types/weather";
 
-/**
- * Comprehensive WMO Weather Codes mapping
- * 100% English descriptions, day/night awareness, icons, and dynamic UI theme colors
- */
 export const getWeatherMeta = (code: number, isDay: number = 1): WeatherMeta => {
   const isNight = isDay === 0;
 
@@ -156,9 +152,6 @@ export const getWeatherMeta = (code: number, isDay: number = 1): WeatherMeta => 
   }
 };
 
-/**
- * Interpret US Air Quality Index (AQI) values
- */
 export const getAqiStatus = (aqi?: number | null): AqiStatus => {
   if (aqi == null || isNaN(aqi)) {
     return {
@@ -214,9 +207,6 @@ export const getAqiStatus = (aqi?: number | null): AqiStatus => {
   };
 };
 
-/**
- * Interpret UV Index values
- */
 export const getUvStatus = (uv?: number | null): UvStatus => {
   if (uv == null || isNaN(uv)) {
     return {
@@ -266,9 +256,6 @@ export const getUvStatus = (uv?: number | null): UvStatus => {
   };
 };
 
-/**
- * Convert wind direction angle in degrees to compass direction string
- */
 export const getWindDirection = (deg?: number | null): string => {
   if (deg == null) return "N";
   const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
@@ -276,9 +263,6 @@ export const getWindDirection = (deg?: number | null): string => {
   return directions[index];
 };
 
-/**
- * Temperature converter helper
- */
 export const formatTemp = (celsius?: number | null, unit: TempUnit = "C"): string => {
   if (celsius == null || isNaN(celsius)) return "--";
   if (unit === "F") {
