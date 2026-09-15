@@ -4,8 +4,9 @@
 
 # ⚡ SkyPulse — Next-Gen Atmospheric Intelligence & Radar
 
-**The most advanced, hyper-immersive meteorological platform and Doppler radar simulator, engineered with Glassmorphism 2.0 aesthetics and zero-latency telemetry.**
+**The most advanced, hyper-immersive meteorological platform and Doppler radar simulator, engineered with Glassmorphism 2.0 aesthetics, end-to-end TypeScript type safety, and enterprise-grade API security.**
 
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React 19](https://img.shields.io/badge/React-19.2.8-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Vite 8](https://img.shields.io/badge/Vite-8.3.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4.3.3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
@@ -14,7 +15,7 @@
 [![Open-Meteo](https://img.shields.io/badge/API-Open--Meteo-FF6F00?style=for-the-badge)](https://open-meteo.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-38BDF8.svg?style=for-the-badge)](LICENSE)
 
-[🌟 Live Features](#-flagship-features) • [📡 Radar Simulator](#-atmospheric-radar--particle-streamline-simulator) • [⚡ Lightning Telemetry](#-lightning-strike--severe-thunderstorm-threat-center) • [🤖 AI Meteorologist](#-skypulse-ai-meteorologist--life-advisor) • [🎧 Soundscape Synthesizer](#-procedural-ambient-soundscape-engine) • [🚀 Quick Start](#-quick-start) • [👨‍💻 Author](#-author--credits)
+[🌟 Flagship Features](#-flagship-features) • [🛡️ API Security](#️-enterprise-api-security--defense-layer) • [📐 Architecture & Types](#-type-safety--architectural-integrity) • [📡 Radar Simulator](#3-️-atmospheric-radar--vector-streamline-simulator) • [⚡ Lightning Telemetry](#1-️-lightning-strike--severe-thunderstorm-threat-center) • [🚀 Quick Start](#-quick-start) • [👨‍💻 Author](#-author--credits)
 
 </div>
 
@@ -22,25 +23,25 @@
 
 ## 🌌 Overview
 
-**SkyPulse** redefines the modern weather application. Beyond standard temperature figures, SkyPulse operates as a comprehensive **meteorological intelligence terminal** designed for precision, beauty, and situational awareness.
+**SkyPulse** redefines the modern weather application. Beyond standard temperature figures, SkyPulse operates as a comprehensive **meteorological intelligence terminal** designed for precision, beauty, situational awareness, and enterprise-grade resilience.
 
-From monitoring **atmospheric convective energy (CAPE)** to tracking **15-minute precipitation pulses**, calculating **lightning strike proximity** in real-time, synthesizing **ambient procedural soundscapes**, and running a **live canvas Doppler radar simulator**, SkyPulse delivers an unprecedented weather monitoring experience.
+From monitoring **atmospheric convective energy (CAPE)** to tracking **15-minute precipitation pulses**, calculating **lightning strike proximity** in real-time, synthesizing **ambient procedural soundscapes**, running a **live canvas Doppler radar simulator**, and defending external API communications through an **enterprise security & rate-limiting layer**, SkyPulse delivers an unmatched weather monitoring experience.
 
-Built on **React 19**, **Tailwind CSS v4**, and **Vite**, SkyPulse features an adaptive **Dual Glassmorphism Engine** that effortlessly adapts between an airy, aero-marine **Daylight Mode** and an obsidian, luminescent **Midnight Dark Mode**.
+Built on **React 19**, **TypeScript**, **Tailwind CSS v4**, and **Vite**, SkyPulse features an adaptive **Dual Glassmorphism Engine** that effortlessly adapts between an airy, aero-marine **Daylight Mode** and an obsidian, luminescent **Midnight Dark Mode**.
 
 ---
 
 ## ⚡ Flagship Features
 
 ```
-┌───────────────────────────────────────────────────────────────────────────┐
-│                           SKY-PULSE PLATFORM                              │
-├───────────────────┬───────────────────┬───────────────────┬───────────────┤
-│  ⚡ LIGHTNING CTR  │  🌊 VOLATILITY    │  🛰️ LIVE RADAR    │  🤖 AI ENGINE │
-│  CAPE Energy Index│  15m Rain Pulse   │  Doppler Echo     │  6-Domain Life│
-│  Flash-to-Bang    │  Barometric Trend │  Wind Streamlines │  Activity     │
-│  30/30 Safety Rule│  Shift Probability│  Thermal Heatmap  │  Readiness    │
-└───────────────────┴───────────────────┴───────────────────┴───────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────────────┐
+│                                   SKY-PULSE PLATFORM                                    │
+├───────────────────┬───────────────────┬───────────────────┬───────────────┬─────────────┤
+│ ⚡ LIGHTNING CTR  │  🌊 VOLATILITY    │  🛰️ LIVE RADAR    │  🤖 AI ENGINE │ 🛡️ SECURITY │
+│  CAPE Energy Index│  15m Rain Pulse   │  Doppler Echo     │  6-Domain Life│ Rate Limiter│
+│  Flash-to-Bang    │  Barometric Trend │  Wind Streamlines │  Activity     │ TTL Caching │
+│  30/30 Safety Rule│  Shift Probability│  Thermal Heatmap  │  Readiness    │ Geo Clamping│
+└───────────────────┴───────────────────┴───────────────────┴───────────────┴─────────────┘
 ```
 
 ---
@@ -124,13 +125,64 @@ Built on **React 19**, **Tailwind CSS v4**, and **Vite**, SkyPulse features an a
 
 ---
 
-### 7. 📱 Ultra-Responsive Mobile Dock & Layout
-*Designed for pixel-perfect usability from 320px mobile screens to 4K desktop displays.*
+## 🛡️ Enterprise API Security & Defense Layer
 
-- **Floating Glass Mobile Dock (`MobileNav.jsx`)**: Docked at the bottom of mobile viewports with one-tap smooth scrolling across:
-  - `Overview` • `Lightning` • `Volatility` • `Radar` • `AI Advisor`
-- **Safe-Area Clearance (`pb-32`)**: Ample bottom breathing room ensuring the footer and developer attribution are never obscured.
-- **Horizontal Scroll Snap**: Touch-optimized swipeable city chips and 24-hour hourly forecast cards.
+SkyPulse incorporates an enterprise-grade API security module located at [`src/services/apiSecurity.ts`](src/services/apiSecurity.ts) to guarantee platform availability, prevent denial-of-service, protect against injection attacks, and adhere to strict third-party provider usage policies:
+
+```
+[User Input / Telemetry Trigger]
+             │
+             ▼
+   [Sanitize & Validate]
+   • Strip script/HTML injection vectors
+   • Restrict query lengths (2 - 60 chars)
+   • Strict Earth bounds check (Lat: ±90°, Lon: ±180°)
+             │
+             ▼
+    [In-Memory TTL Cache] ─── (Cache Hit?) ───► [Instant Response]
+             │ (Cache Miss)
+             ▼
+  [Rate Limiter & Throttle]
+   • Nominatim: 1,050ms enforced delay (Prevents IP bans)
+   • Token Bucket Limiter (25 tokens, 5/sec refill)
+             │
+             ▼
+  [Secured Axios Network Call]
+   • 9,000ms hard timeout fail-safe
+   • Masked & sanitized error propagation
+```
+
+### Key Security Safeguards:
+1. **Input Sanitization & Injection Defense**:
+   - `sanitizeSearchQuery`: Strips all control characters, HTML tags, script injection patterns, and limits search lengths to 60 characters to eliminate URI malformation and injection attacks.
+2. **Geographical Coordinate Bounding**:
+   - `validateCoordinates`: Ensures coordinates are finite numerical numbers, rejects `NaN`/`Infinity`, strictly clamps latitude to `[-90, 90]` and longitude to `[-180, 180]`, and rounds to 5 decimal places (~1.1 meter physical accuracy) to eliminate float noise and maximize cache hits.
+3. **OpenStreetMap Nominatim 1-Req/Sec Policy Enforcer**:
+   - `throttleNominatim`: Strict algorithmic throttling ensuring consecutive reverse geocoding requests maintain an enforced delay of at least 1,050ms, permanently eliminating rate-limit blocks and IP bans.
+4. **Token Bucket Rate Limiter**:
+   - `weatherApiLimiter`: Regulates outgoing bursts (25 max tokens, 5 refills/sec) to shield both client performance and external telemetry endpoints from flooding.
+5. **Multi-Tier In-Memory TTL Cache**:
+   - Forecast queries cached for **4 minutes** (`240,000 ms`).
+   - City search autocomplete queries cached for **10 minutes** (`600,000 ms`).
+   - Reverse geocoded GPS locations cached for **30 minutes** (`1,800,000 ms`).
+   - Cap of 200 items with automatic LRU eviction preventing memory leaks.
+6. **Network Timeouts & Error Masking**:
+   - Hard **9-second connection timeout** (`API_TIMEOUT_MS`) prevents stalled threads.
+   - `sanitizeErrorMessage`: Automatically sanitizes network errors, stripping raw URLs, server paths, and credentials before errors surface in the interface.
+
+---
+
+## 📐 Type Safety & Architectural Integrity
+
+SkyPulse is 100% written in **TypeScript**, delivering end-to-end type safety from external API payloads down to component props:
+
+- **Strict Type System ([`src/types/weather.ts`](src/types/weather.ts))**:
+  - `WeatherForecastResponse`: Full schema covering `current`, `hourly`, `daily`, and `minutely_15`.
+  - `WeatherCurrent`: Type-checked thermal, barometric, CAPE, and lightning potential metrics.
+  - `AirQualityResponse`: European AQI, US EPA AQI, and detailed particulate matter concentrations (`pm2_5`, `pm10`, `ozone`, `carbon_monoxide`, `nitrogen_dioxide`, `sulphur_dioxide`).
+  - `CityItem` & `HotspotCity`: Geolocation metadata, country codes, and coordinates.
+- **Zero Type Errors**: Compiles cleanly with `npx tsc --noEmit` under strict TypeScript compiler rules.
+- **Vite Environment Typing**: Configured with [`src/vite-env.d.ts`](src/vite-env.d.ts) for Vite client and CSS module support.
 
 ---
 
@@ -138,6 +190,7 @@ Built on **React 19**, **Tailwind CSS v4**, and **Vite**, SkyPulse features an a
 
 | Technology | Version | Purpose |
 | :--- | :--- | :--- |
+| **TypeScript** | `^5.x` | Static typing, interface contracts, compiler type verification |
 | **React** | `^19.2.8` | Next-generation UI rendering, concurrent features, and state hooks |
 | **Vite** | `^8.3.0` | Ultra-fast build tool, instant HMR, and optimized production bundling |
 | **Tailwind CSS** | `^4.3.3` | Modern utility styling with `@custom-variant dark` and custom glass tokens |
@@ -145,7 +198,7 @@ Built on **React 19**, **Tailwind CSS v4**, and **Vite**, SkyPulse features an a
 | **Web Audio API** | Native | Procedural weather sound synthesis (rain, thunder, wind, nature) |
 | **HTML5 Canvas** | Native | High-frequency Doppler radar scanner & live particle rain/lightning FX |
 | **Lucide React** | `^1.45.0` | Clean, modern vector iconography |
-| **Axios** | `^1.20.0` | Robust asynchronous HTTP networking |
+| **Axios** | `^1.20.0` | Robust asynchronous HTTP networking with timeouts and rate limiting |
 | **Open-Meteo API** | v1 | Open-source global forecast, hourly CAPE, minutely-15, and AQI telemetry |
 
 ---
@@ -167,19 +220,24 @@ cd Sky-Pulse-Weather-App
 npm install
 ```
 
-### 3. Start Development Server
+### 3. Type Checking
+```bash
+npx tsc --noEmit
+```
+
+### 4. Start Development Server
 ```bash
 npm run dev
 ```
 Navigate to `http://localhost:5173` in your browser.
 
-### 4. Build for Production
+### 5. Build for Production
 ```bash
 npm run build
 ```
-Generates an optimized, minified bundle in the `dist/` directory.
+Generates an optimized, minified production bundle in the `dist/` directory.
 
-### 5. Preview Production Build
+### 6. Preview Production Build
 ```bash
 npm run preview
 ```
@@ -195,32 +253,37 @@ sky-pulse/
 │   └── favicon.ico                # Application favicon
 ├── src/
 │   ├── components/
-│   │   ├── AiMeteorologistPanel.jsx   # AI atmospheric brief & 6-domain activity matrix
-│   │   ├── AirQualityPanel.jsx        # US EPA AQI gauge & PM2.5/PM10 metrics
-│   │   ├── AmbientSoundscape.jsx      # Web Audio controller with volume stepper & presets
-│   │   ├── CityChips.jsx              # Quick-access global hotspot city pills
-│   │   ├── DailyForecast.jsx          # 7-day extended forecast with daily temperature spans
-│   │   ├── DetailedMetrics.jsx        # 6 sensor cards (humidity, dew point, wind, UV, pressure)
-│   │   ├── Footer.jsx                 # Glassmorphic developer attribution & copyright
-│   │   ├── ForecastChart.jsx          # 24-hour predictive telemetry curve (temp, rain, wind)
-│   │   ├── Header.jsx                 # Redesigned glass navigation bar with audio & FX toggles
-│   │   ├── HeroCard.jsx               # Current weather overview, feels-like, & solar cycle arc
-│   │   ├── LightningThreatPanel.jsx   # Akunu Sara / CAPE index & Flash-to-Bang distance tool
-│   │   ├── LiveWeatherCanvas.jsx      # Live canvas falling rain particles & lightning strikes
-│   │   ├── MobileNav.jsx              # Floating mobile bottom navigation dock
-│   │   ├── RadarMapPanel.jsx          # Interactive Doppler radar simulator (dBZ, wind, thermal)
-│   │   ├── SearchBar.jsx              # Debounced global geocoding search & autocomplete
-│   │   └── WeatherVolatilityPanel.jsx # Sudden shift probability barometer & 15-min rain pulse
+│   │   ├── AiMeteorologistPanel.tsx   # AI atmospheric brief & 6-domain activity matrix
+│   │   ├── AirQualityPanel.tsx        # US EPA AQI gauge & PM2.5/PM10 metrics
+│   │   ├── AmbientSoundscape.tsx      # Web Audio controller with volume stepper & presets
+│   │   ├── CityChips.tsx              # Quick-access global hotspot city pills
+│   │   ├── DailyForecast.tsx          # 7-day extended forecast with daily temperature spans
+│   │   ├── DetailedMetrics.tsx        # 6 sensor cards (humidity, dew point, wind, UV, pressure)
+│   │   ├── Footer.tsx                 # Glassmorphic developer attribution & copyright
+│   │   ├── ForecastChart.tsx          # 24-hour predictive telemetry curve (temp, rain, wind)
+│   │   ├── Header.tsx                 # Redesigned glass navigation bar with audio & FX toggles
+│   │   ├── HeroCard.tsx               # Current weather overview, feels-like, & solar cycle arc
+│   │   ├── LightningThreatPanel.tsx   # Akunu Sara / CAPE index & Flash-to-Bang distance tool
+│   │   ├── LiveWeatherCanvas.tsx      # Live canvas falling rain particles & lightning strikes
+│   │   ├── MobileNav.tsx              # Floating mobile bottom navigation dock
+│   │   ├── RadarMapPanel.tsx          # Interactive Doppler radar simulator (dBZ, wind, thermal)
+│   │   ├── SearchBar.tsx              # Debounced global geocoding search & autocomplete
+│   │   ├── WeatherIcon.tsx            # Lucide icon dynamic map resolver
+│   │   └── WeatherVolatilityPanel.tsx # Sudden shift probability barometer & 15-min rain pulse
 │   ├── services/
-│   │   └── weatherApi.js              # Open-Meteo forecast, CAPE, minutely-15 & AQI client
+│   │   ├── apiSecurity.ts             # Enterprise API security: sanitization, throttling, caching
+│   │   └── weatherApi.ts              # Type-safe Open-Meteo & Nominatim network client
+│   ├── types/
+│   │   └── weather.ts                 # Meteorological & Geolocation TypeScript interfaces
 │   ├── utils/
-│   │   ├── weatherCodes.js            # WMO meteorological code mappings & visual metadata
-│   │   └── weatherSynth.js            # Procedural Web Audio API sound synthesis engine
-│   ├── App.jsx                        # Master dashboard state orchestration & telemetry loader
+│   │   ├── weatherCodes.ts            # WMO meteorological code mappings & visual metadata
+│   │   └── weatherSynth.ts            # Procedural Web Audio API sound synthesis engine
+│   ├── App.tsx                        # Master dashboard state orchestration & telemetry loader
 │   ├── index.css                      # Tailwind v4 theme, glass tokens, & custom keyframes
-│   └── main.jsx                       # Application entry point
-├── package.json                       # Project configuration & scripts
-├── tailwind.config.js                 # Tailwind design system extensions
+│   ├── main.tsx                       # Application entry point with strict root null checks
+│   └── vite-env.d.ts                  # Vite client & CSS module type declarations
+├── package.json                       # Project configuration, dependencies & scripts
+├── tsconfig.json                      # Strict modern TypeScript compiler configuration
 ├── vite.config.js                     # Vite build & bundler configuration
 └── README.md                          # Platform documentation
 ```
@@ -251,5 +314,5 @@ SkyPulse is built upon the **Glassmorphism 2.0** design philosophy:
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
 <div align="center">
-  <sub>Engineered with ⚡ precision, mathematical audio synthesis, and modern web design by <strong>Chathunga Bimsara</strong>.</sub>
+  <sub>Engineered with ⚡ precision, mathematical audio synthesis, TypeScript type safety, and modern web design by <strong>Chathunga Bimsara</strong>.</sub>
 </div>
