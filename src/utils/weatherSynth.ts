@@ -1,8 +1,3 @@
-/**
- * Web Audio API Procedural Weather Soundscape Synthesizer
- * Generates realistic ambient weather audio using mathematical synthesis (zero external audio files).
- */
-
 declare global {
   interface Window {
     webkitAudioContext?: typeof AudioContext;
