@@ -1,11 +1,3 @@
-/**
- * SkyPulse Enterprise API Security Layer
- * - Strict input sanitization & coordinate boundaries
- * - Rate limiting & call throttling (prevents Nominatim & Open-Meteo IP bans)
- * - In-memory TTL cache to eliminate redundant network roundtrips
- * - Request timeouts and safe error boundary normalization
- */
-
 // Simple In-Memory TTL Cache Entry
 interface CacheEntry<T> {
   data: T;
@@ -14,9 +6,6 @@ interface CacheEntry<T> {
 
 const memoryCache = new Map<string, CacheEntry<any>>();
 
-/**
- * Store data with Time-To-Live in milliseconds
- */
 export function getCached<T>(key: string): T | null {
   const entry = memoryCache.get(key);
   if (!entry) return null;
@@ -27,9 +16,6 @@ export function getCached<T>(key: string): T | null {
   return entry.data as T;
 }
 
-/**
- * Set cache item with expiration
- */
 export function setCached<T>(key: string, data: T, ttlMs: number): void {
   // Cap cache size to avoid unbounded memory growth
   if (memoryCache.size > 200) {
@@ -42,9 +28,6 @@ export function setCached<T>(key: string, data: T, ttlMs: number): void {
   });
 }
 
-/**
- * Sanitize text inputs for city search to prevent injection attacks and malformed URIs
- */
 export function sanitizeSearchQuery(input: unknown): string {
   if (typeof input !== "string") return "";
   // Strip control characters, html tags, script symbols, limit length to 60 characters
@@ -55,9 +38,6 @@ export function sanitizeSearchQuery(input: unknown): string {
     .slice(0, 60);
 }
 
-/**
- * Validate and clamp geographical coordinates strictly within physical earth bounds
- */
 export function validateCoordinates(
   latInput: unknown,
   lonInput: unknown
@@ -81,10 +61,6 @@ export function validateCoordinates(
   return { valid: true, lat: safeLat, lon: safeLon };
 }
 
-/**
- * Nominatim / Geocoding rate limiter
- * Strictly enforces a minimum delay (1000ms) between calls to prevent rate-limit blocks
- */
 let lastNominatimTimestamp = 0;
 const NOMINATIM_MIN_INTERVAL_MS = 1050; // OSM Nominatim usage policy: max 1 req/sec
 
@@ -98,9 +74,6 @@ export async function throttleNominatim(): Promise<void> {
   lastNominatimTimestamp = Date.now();
 }
 
-/**
- * General client-side rate limiting tracker (Token bucket)
- */
 class RateLimiter {
   private tokens: number;
   private maxTokens: number;
@@ -130,14 +103,8 @@ class RateLimiter {
 
 export const weatherApiLimiter = new RateLimiter(25, 5);
 
-/**
- * Request timeout configuration helper (milliseconds)
- */
 export const API_TIMEOUT_MS = 9000;
 
-/**
- * Safe error sanitization to prevent leaking sensitive network traces or credentials
- */
 export function sanitizeErrorMessage(err: unknown, fallback = "Network service unavailable"): string {
   if (typeof err === "string") return err.slice(0, 100);
   if (err && typeof err === "object") {
