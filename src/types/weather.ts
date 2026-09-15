@@ -1,7 +1,3 @@
-/**
- * SkyPulse Meteorological & Geolocation Type Definitions
- */
-
 export interface CityItem {
   id?: number;
   name: string;
