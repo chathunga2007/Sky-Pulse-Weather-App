@@ -14,12 +14,14 @@ import AiMeteorologistPanel from "./components/AiMeteorologistPanel";
 import RadarMapPanel from "./components/RadarMapPanel";
 import AmbientSoundscape from "./components/AmbientSoundscape";
 import LiveWeatherCanvas from "./components/LiveWeatherCanvas";
+import InteractiveMapModal from "./components/InteractiveMapModal";
 import MobileNav from "./components/MobileNav";
 import Footer from "./components/Footer";
 import {
   fetchComprehensiveWeather,
   fetchAirQuality,
   reverseGeocode,
+  reverseGeocodePlace,
   searchCities,
 } from "./services/weatherApi";
 import {
@@ -58,6 +60,7 @@ export default function App() {
   const [suggestions, setSuggestions] = useState<CityItem[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const [isMapModalOpen, setIsMapModalOpen] = useState<boolean>(false);
 
   // ==== City & Weather States ====
   const [currentCity, setCurrentCity] = useState<{
@@ -190,35 +193,88 @@ export default function App() {
     };
   }, []);
 
+  // Real-time Debounced Search Effect while typing
+  useEffect(() => {
+    const trimmed = query.trim();
+    if (trimmed.length < 2) {
+      setSuggestions([]);
+      setShowDropdown(false);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setIsSearching(true);
+      try {
+        const results = await searchCities(trimmed);
+        setSuggestions(results);
+        if (results.length > 0) {
+          setShowDropdown(true);
+        }
+      } catch (err) {
+        console.error("Live search failed:", err);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 280);
+
+    return () => clearTimeout(timer);
+  }, [query]);
+
   // Select city handler
   const handleSelectCity = (item: CityItem) => {
     setQuery("");
     setSuggestions([]);
     setShowDropdown(false);
+
+    // Build clear country/region subtitle for HeroCard: e.g. "Galle District, Southern Province, Sri Lanka"
+    let formattedRegion = "";
+    if (item.admin1) {
+      formattedRegion =
+        item.country && !item.admin1.includes(item.country)
+          ? `${item.admin1}, ${item.country}`
+          : item.admin1;
+    } else {
+      formattedRegion = item.country || "Sri Lanka";
+    }
+
     loadWeatherData(
       item.latitude,
       item.longitude,
       item.name,
-      item.country ? `${item.admin1 ? item.admin1 + ", " : ""}${item.country}` : item.admin1
+      formattedRegion
     );
   };
 
   // Search submit handler
   const handleSearchSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!query.trim()) return;
+    const trimmed = query.trim();
+    if (!trimmed) return;
 
-    if (suggestions.length > 0) {
+    // If suggestions are already loaded
+    if (suggestions.length > 1) {
+      // Keep dropdown open so the user can choose their specific district
+      setShowDropdown(true);
+      return;
+    }
+
+    if (suggestions.length === 1) {
       handleSelectCity(suggestions[0]);
+      return;
+    }
+
+    // Query now if not loaded yet
+    setIsSearching(true);
+    const results = await searchCities(trimmed);
+    setIsSearching(false);
+
+    if (results.length > 1) {
+      setSuggestions(results);
+      setShowDropdown(true);
+    } else if (results.length === 1) {
+      handleSelectCity(results[0]);
     } else {
-      setIsSearching(true);
-      const results = await searchCities(query);
-      setIsSearching(false);
-      if (results.length > 0) {
-        handleSelectCity(results[0]);
-      } else {
-        setError(`City "${query}" could not be located. Try another city.`);
-      }
+      setError(`Location "${query}" could not be located. Try another query or pick on the interactive map.`);
     }
   };
 
@@ -234,8 +290,13 @@ export default function App() {
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const { latitude, longitude } = pos.coords;
-        const placeName = await reverseGeocode(latitude, longitude);
-        await loadWeatherData(latitude, longitude, placeName, "Live GPS Location");
+        const place = await reverseGeocodePlace(latitude, longitude);
+        await loadWeatherData(
+          latitude,
+          longitude,
+          place.name,
+          place.region ? `${place.region}, ${place.country}` : place.country
+        );
       },
       (geoErr) => {
         console.warn("Geolocation denied or error:", geoErr);
@@ -359,6 +420,7 @@ export default function App() {
           handleRefresh={handleRefresh}
           fxEnabled={fxEnabled}
           setFxEnabled={setFxEnabled}
+          onOpenMap={() => setIsMapModalOpen(true)}
           audioComponent={
             <AmbientSoundscape
               weatherCode={current?.weather_code}
@@ -377,6 +439,7 @@ export default function App() {
               setShowDropdown={setShowDropdown}
               handleSelectCity={handleSelectCity}
               handleSearchSubmit={handleSearchSubmit}
+              onOpenMap={() => setIsMapModalOpen(true)}
             />
           }
         />
@@ -523,6 +586,7 @@ export default function App() {
                 current={current}
                 currentCity={currentCity}
                 darkMode={darkMode}
+                onOpenMap={() => setIsMapModalOpen(true)}
               />
             </div>
 
@@ -554,6 +618,19 @@ export default function App() {
         <MobileNav
           activeSection={activeSection}
           onSelectSection={handleSelectMobileSection}
+        />
+
+        {/* Interactive Atmospheric Map Scanner & Location Picker */}
+        <InteractiveMapModal
+          isOpen={isMapModalOpen}
+          onClose={() => setIsMapModalOpen(false)}
+          onSelectLocation={(lat, lon, cityName, countryName) => {
+            loadWeatherData(lat, lon, cityName, countryName);
+          }}
+          initialLat={currentCity.lat}
+          initialLon={currentCity.lon}
+          currentCityName={currentCity.name}
+          darkMode={darkMode}
         />
       </div>
     </div>
