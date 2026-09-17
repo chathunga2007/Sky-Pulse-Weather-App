@@ -2,6 +2,9 @@ export interface CityItem {
   id?: number;
   name: string;
   admin1?: string;
+  admin2?: string;
+  district?: string;
+  province?: string;
   country?: string;
   countryCode?: string;
   latitude: number;
