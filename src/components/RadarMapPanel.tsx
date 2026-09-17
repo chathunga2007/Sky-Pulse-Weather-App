@@ -6,6 +6,7 @@ import {
   Droplets,
   Wind,
   Thermometer,
+  Compass,
 } from "lucide-react";
 import type { WeatherCurrent } from "../types/weather";
 
@@ -13,6 +14,7 @@ interface RadarMapPanelProps {
   current: WeatherCurrent | null;
   currentCity: { name: string; lat?: number; lon?: number } | null;
   darkMode?: boolean;
+  onOpenMap?: () => void;
 }
 
 interface WindParticle {
@@ -27,6 +29,7 @@ export default function RadarMapPanel({
   current,
   currentCity,
   darkMode = true,
+  onOpenMap,
 }: RadarMapPanelProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
@@ -253,6 +256,17 @@ export default function RadarMapPanel({
 
         {/* Controls Toolbar */}
         <div className="flex flex-wrap items-center gap-2">
+          {onOpenMap && (
+            <button
+              type="button"
+              onClick={onOpenMap}
+              className="px-3.5 py-1.5 rounded-2xl bg-gradient-to-r from-cyan-600 via-blue-600 to-cyan-500 hover:from-cyan-500 hover:to-blue-500 text-white text-xs font-black shadow-md shadow-cyan-600/30 flex items-center gap-1.5 transition active:scale-95 cursor-pointer"
+            >
+              <Compass className="w-3.5 h-3.5 animate-spin-slow" />
+              <span>Interactive Map Scanner</span>
+            </button>
+          )}
+
           {/* Layer Selector */}
           <div className="glass-pill p-1 rounded-2xl flex items-center shadow-xs">
             <button
