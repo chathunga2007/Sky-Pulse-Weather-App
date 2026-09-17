@@ -55,7 +55,7 @@ export default function AmbientSoundscape({
           type="button"
           onClick={toggleAudio}
           title={isPlaying ? "Mute Ambient Weather Audio" : "Play Ambient Weather Soundscape"}
-          className={`glass-pill px-3 py-2 rounded-2xl flex items-center gap-2 cursor-pointer active:scale-95 transition-all text-xs font-bold shadow-xs ${
+          className={`glass-pill p-2 sm:px-2.5 sm:py-2 rounded-2xl flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all text-xs font-bold shadow-xs ${
             isPlaying
               ? "border-cyan-500/60 bg-cyan-500/15 text-cyan-700 dark:text-cyan-300"
               : "text-slate-800 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-300"
@@ -63,9 +63,9 @@ export default function AmbientSoundscape({
         >
           {isPlaying ? (
             <>
-              <Volume2 className="w-4 h-4 text-cyan-600 dark:text-cyan-400 animate-pulse" />
+              <Volume2 className="w-4 h-4 text-cyan-600 dark:text-cyan-400 animate-pulse shrink-0" />
               {/* Equalizer animated bars */}
-              <div className="flex items-end gap-0.5 h-3.5 px-0.5">
+              <div className="flex items-end gap-0.5 h-3.5 px-0.5 shrink-0">
                 <span
                   className="w-1 bg-cyan-600 dark:bg-cyan-400 rounded-full animate-[equalizer_0.8s_ease-in-out_infinite_alternate]"
                   style={{ height: "60%" }}
@@ -79,13 +79,13 @@ export default function AmbientSoundscape({
                   style={{ height: "40%" }}
                 />
               </div>
-              <span className="hidden md:inline font-bold">Soundscape</span>
-              <span className="text-[10px] opacity-80 font-mono">({Math.round(volume * 100)}%)</span>
+              <span className="hidden 2xl:inline font-bold">Soundscape</span>
+              <span className="hidden 2xl:inline text-[10px] opacity-80 font-mono">({Math.round(volume * 100)}%)</span>
             </>
           ) : (
             <>
-              <VolumeX className="w-4 h-4 text-slate-500" />
-              <span className="hidden md:inline font-medium">Ambient Audio</span>
+              <VolumeX className="w-4 h-4 text-slate-500 shrink-0" />
+              <span className="hidden 2xl:inline font-medium">Ambient Audio</span>
             </>
           )}
         </button>
